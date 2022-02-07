@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
+import MainPage from "./android/app/src/mainPage";
 
 
 const App = () => {
   return (
       <View>
-        <Text>Strona główna</Text>
+          <MainPage />
       </View>
   );
 };
