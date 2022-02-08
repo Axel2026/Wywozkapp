@@ -72,16 +72,18 @@ const styles = StyleSheet.create({
     },
 
     locationName: {
-        fontWeight: 'bold',
         color: 'black',
-        fontSize: 20
+        fontSize: 20,
+        fontFamily: 'Poppins-Black'
     },
 
     locationCity: {
         color: 'black',
+        fontFamily: 'Poppins-Medium'
     },
 
     locationDate: {
         color: 'black',
+        fontFamily: 'Poppins-Medium'
     },
 });
