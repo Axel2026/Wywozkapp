@@ -2,8 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View, StyleSheet, Image} from 'react-native';
 import locationIcon from "../src/images/locationIcon.png"
 import GetLocation from 'react-native-get-location'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const MainPage  = () => {
+
+const MainPage  = ({navigation}) => {
 
     const [latitude, setLatitude] = useState(0);
     const [longitude, setLongitude] = useState(0);
@@ -30,18 +32,18 @@ const MainPage  = () => {
 
     return (
         <View style={styles.main_buttons_container}>
-            <TouchableOpacity style={styles.main_buttons}><Text style={styles.locationName}>Lokalizacja</Text><Image style={styles.locationIcon} source={locationIcon}/>
-                <Text style={styles.locationCity}>{latitude}, {longitude}</Text><Text style={styles.locationDate}>07.02.2022 18:02</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons}><Text>Przycisk 2</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons}><Text>Przycisk 3</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons}><Text>Przycisk 4</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons}><Text>Przycisk 5</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons}><Text>Przycisk 6</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><Text style={styles.button_name}>Lokalizacja</Text><Image style={styles.location_icon} source={locationIcon}/>
+                <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><Text style={styles.button_name}>Najbliższy  wywóz</Text><Icon name="rocket" /><Text>Sroda, 20.11.2020</Text><Text>Smieci mieszane</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><Text style={styles.button_name}>Kontakt do firm</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><Text style={styles.button_name}>Harmonogram wywozów</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><Text style={styles.button_name}>Informacje o recyklingu</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><Text style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
         </View>
     );
 };
 
-export default MainPage ;
+export default MainPage;
 
 const styles = StyleSheet.create({
     main_buttons_container: {
@@ -58,6 +60,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         justifyContent: "center",
+        textAlign: 'center',
         alignItems: "center",
         width: '45%',
         aspectRatio: 1,
@@ -66,23 +69,24 @@ const styles = StyleSheet.create({
         marginTop: '5%'
     },
 
-    locationIcon: {
+    button_name: {
+        textAlign: 'center',
+        color: 'black',
+        fontSize: 20,
+        fontFamily: 'Poppins-Bold'
+    },
+
+    location_icon: {
         width: 30,
         height: 30,
     },
 
-    locationName: {
-        color: 'black',
-        fontSize: 20,
-        fontFamily: 'Poppins-Black'
-    },
-
-    locationCity: {
+    location_city: {
         color: 'black',
         fontFamily: 'Poppins-Medium'
     },
 
-    locationDate: {
+    location_date: {
         color: 'black',
         fontFamily: 'Poppins-Medium'
     },
