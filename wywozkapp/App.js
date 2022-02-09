@@ -10,6 +10,7 @@ import GarbageSchedule from "./android/app/src/garbageSchedule";
 import NextGarbage from "./android/app/src/nextGarbage";
 import RecyclingInfo from "./android/app/src/recyclingInfo";
 import Settings from "./android/app/src/settings";
+import newUserSettingsModal from "./android/app/src/newUserSettingsModal";
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
               <Stack.Screen name="GarbageSchedule" component={GarbageSchedule} options={{ headerShown: false }}/>
               <Stack.Screen name="RecyclingInfo" component={RecyclingInfo} options={{ headerShown: false }}/>
               <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
+              <Stack.Screen name="newUserSettingsModal" component={newUserSettingsModal} options={{ headerShown: false,animationEnabled:true }}/>
           </Stack.Navigator>
       </NavigationContainer>
   );

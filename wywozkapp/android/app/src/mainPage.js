@@ -7,14 +7,37 @@ import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-
+import { AsyncStorage } from 'react-native';
 
 const MainPage  = ({navigation}) => {
 
     const [latitude, setLatitude] = useState(0);
     const [longitude, setLongitude] = useState(0);
+    const [city,setCity] = useState();
+    const [street,setStreet] = useState();
+    const [houseNumber,setHouseNumber] = useState();
+
+    const _retrieveData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
+            if (value === null) {
+                navigation.navigate("newUserSettingsModal")
+            }else{
+                //alert("Wczytano ustawienia: " + value)
+                let val = JSON.parse(value)
+                setCity(val.city)
+                setStreet(val.street)
+                setHouseNumber(val.houseNumber)
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    };
 
     useEffect(() => {
+
+        _retrieveData()
+
         GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -37,7 +60,7 @@ const MainPage  = ({navigation}) => {
     return (
         <View style={styles.main_buttons_container}>
             <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><Entypo color="black" size={35} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
-                <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
+               <Text style={styles.location_city}>{city}, {street} {houseNumber}</Text><Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
             <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><MaterialCommunityIcons color="black" size={35} name="dump-truck"/><Text style={styles.button_name}>Najbliższy  wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
             <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><AntDesign color="black" size={35} name="contacts"/><Text style={styles.button_name}>Kontakt do firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących odpady</Text></TouchableOpacity>
             <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><MaterialCommunityIcons color="black" size={35} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text><Text style={styles.button_description}>Daty wywozów {"\n"}odpadów</Text></TouchableOpacity>
@@ -65,7 +88,7 @@ const MainPage  = ({navigation}) => {
     //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
     //     </View>
     );
-};
+}
 
 export default MainPage;
 
@@ -143,4 +166,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
         textAlign: 'center'
     },
+    new_user_settings:{
+        backgroundColor: 'yellow',
+        position:'absolute',
+        top:10,
+        width:'95%',
+        height:'100%',
+        elevation:3,
+        zIndex:3,
+    }
 });
