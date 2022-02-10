@@ -176,10 +176,12 @@ const styles = StyleSheet.create({
         color: 'black',
         fontFamily: 'Poppins-Medium'
     },
+
     header_icon: {
         backgroundColor: 'blue',
         display: 'flex',
     },
+
     header_text: {
         backgroundColor: 'yellow',
         width: 'auto'
