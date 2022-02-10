@@ -16,36 +16,36 @@ const RecyclingInfo = () => {
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zeszyty i książki</Text>
             </View>
             <View style={styles.glass}><Text style={styles.header}>Szkło</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> butelki i słoiki po napojach
+               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki i słoiki po napojach
                     i żywności (w tym butelki po napojach alkoholowych i olejach roślinnych)</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> szklane opakowania po
+               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> szklane opakowania po
                     kosmetykach (jeżeli nie są wykonane z trwale połączonych kilku surowców)</Text>
             </View>
             <View style={styles.bio}><Text style={styles.header}>Bio</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> odpadki warzywne i owocowe (w
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> odpadki warzywne i owocowe (w
                     tym obierki itp.)</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> gałęzie drzew i
+               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> gałęzie drzew i
                     krzewów</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> skoszoną trawę, liście,
+               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> skoszoną trawę, liście,
                     kwiaty</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> trociny i korę drzew</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> resztki jedzenia</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> trociny i korę drzew</Text>
+               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> resztki jedzenia</Text>
             </View>
             <View style={styles.metals}><Text style={styles.header}>Metale i tworzywa sztuczne</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> butelki plastikowe</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> kartony po mleku i
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki plastikowe</Text>
+               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> kartony po mleku i
                     napojach</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> torby i opakowania
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> torby i opakowania
                     plastikowe</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> puszki po napojach i
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> puszki po napojach i
                     konserwach</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> nakrętki, kapsle</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> nakrętki, kapsle</Text>
             </View>
             <View style={styles.mixed}><Text style={styles.header}>Mieszane</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> zatłuszczony papier</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> zabrudzone folie</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> zużyte ręczniki</Text>
-                <Text style={styles.dot}>{'\n'}{'\u2B24'}</Text><Text style={styles.main}> mięso,kości i ości</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zatłuszczony papier</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zabrudzone folie</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zużyte ręczniki</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> mięso,kości i ości</Text>
             </View>
         </ScrollView>
     );
