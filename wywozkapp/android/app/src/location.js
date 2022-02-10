@@ -1,10 +1,10 @@
 import React from 'react';
-import TabNavigation from "./TabNavigation";
+import {Text, View} from "react-native";
 
 
-const Location  = () => {
+const Location = () => {
     return (
-        <TabNavigation />
+        <View><Text>Location screen</Text></View>
     );
 };
 

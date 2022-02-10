@@ -1,28 +1,33 @@
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View, StyleSheet, Image} from 'react-native';
-import locationIcon from "../src/images/locationIcon.png"
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import GetLocation from 'react-native-get-location'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { AsyncStorage } from 'react-native';
+import {AsyncStorage} from 'react-native';
 
-const MainPage  = ({navigation}) => {
+const MainPage = ({navigation}) => {
 
     const [latitude, setLatitude] = useState(0);
     const [longitude, setLongitude] = useState(0);
-    const [city,setCity] = useState();
-    const [street,setStreet] = useState();
-    const [houseNumber,setHouseNumber] = useState();
+    const [city, setCity] = useState();
+    const [street, setStreet] = useState();
+    const [houseNumber, setHouseNumber] = useState();
+
+    function setDateLocationComponent() {
+        const date = new Date();
+        const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        return day + "." + month + "." + date.getFullYear();
+    }
 
     const _retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
             if (value === null) {
                 navigation.navigate("newUserSettingsModal")
-            }else{
+            } else {
                 //alert("Wczytano ustawienia: " + value)
                 let val = JSON.parse(value)
                 setCity(val.city)
@@ -52,41 +57,63 @@ const MainPage  = ({navigation}) => {
                     })
             })
             .catch(error => {
-                const { code, message } = error;
+                const {code, message} = error;
                 console.warn(code, message);
             })
+
     }, [])
 
     return (
         <View style={styles.main_buttons_container}>
-            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><Entypo color="black" size={35} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
-               <Text style={styles.location_city}>{city}, {street} {houseNumber}</Text><Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><MaterialCommunityIcons color="black" size={35} name="dump-truck"/><Text style={styles.button_name}>Najbliższy  wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><AntDesign color="black" size={35} name="contacts"/><Text style={styles.button_name}>Kontakt do firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących odpady</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><MaterialCommunityIcons color="black" size={35} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text><Text style={styles.button_description}>Daty wywozów {"\n"}odpadów</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><MaterialCommunityIcons color="black" size={35} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text><Text style={styles.button_description}>Segregacja odpadów</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><MaterialIcons color="black" size={50} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+                navigation.navigate('Location')
+            }}><Entypo color="black" size={35} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
+                <Text style={styles.location_city}>{city}, {street} {houseNumber}</Text><Text
+                    style={styles.location_date}>{setDateLocationComponent()}</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+                navigation.navigate('NextGarbage')
+            }}><MaterialCommunityIcons color="black" size={35} name="dump-truck"/><Text style={styles.button_name}>Najbliższy
+                wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text
+                style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+                navigation.navigate('Contact')
+            }}><AntDesign color="black" size={35} name="contacts"/><Text style={styles.button_name}>Kontakt do
+                firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących
+                odpady</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+                navigation.navigate('GarbageSchedule')
+            }}><MaterialCommunityIcons color="black" size={35} name="timetable"/><Text style={styles.button_name}>Harmonogram
+                wywozów</Text><Text style={styles.button_description}>Daty
+                wywozów {"\n"}odpadów</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+                navigation.navigate('RecyclingInfo')
+            }}><MaterialCommunityIcons color="black" size={35} name="recycle"/><Text style={styles.button_name}>Informacje
+                o recyklingu</Text><Text style={styles.button_description}>Segregacja odpadów</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+                navigation.navigate('Settings')
+            }}><MaterialIcons color="black" size={50} name="settings"/><Text
+                style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
         </View>
 
-    // <View style={styles.main_buttons_container}>
-    //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><View style={styles.header}><Entypo color="black" size={27} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text></View>
-    //         <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
-    //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="dump-truck"/><Text style={styles.button_name}>Najbliższy{"\n"} wywóz</Text></View><Text>Sroda, 20.11.2020</Text><Text>Smieci mieszane</Text></TouchableOpacity>
-    //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><View style={styles.header}><AntDesign color="black" size={27} name="contacts"/><Text style={styles.button_name}>Kontakt {"\n"}do firm</Text></View></TouchableOpacity>
-    //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text></View></TouchableOpacity>
-    //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text></View></TouchableOpacity>
-    //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><View style={styles.header}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></View></TouchableOpacity>
-    // </View>
+        // <View style={styles.main_buttons_container}>
+        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><View style={styles.header}><Entypo color="black" size={27} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text></View>
+        //         <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
+        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="dump-truck"/><Text style={styles.button_name}>Najbliższy{"\n"} wywóz</Text></View><Text>Sroda, 20.11.2020</Text><Text>Smieci mieszane</Text></TouchableOpacity>
+        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><View style={styles.header}><AntDesign color="black" size={27} name="contacts"/><Text style={styles.button_name}>Kontakt {"\n"}do firm</Text></View></TouchableOpacity>
+        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text></View></TouchableOpacity>
+        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text></View></TouchableOpacity>
+        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><View style={styles.header}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></View></TouchableOpacity>
+        // </View>
 
-    //     <View style={styles.main_buttons_container}>
-    //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><Entypo color="black" size={27} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
-    //             <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
-    //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><MaterialCommunityIcons color="black" size={27} name="dump-truck"/><Text style={styles.button_name}>Najbliższy{"\n"} wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
-    // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><AntDesign color="black" size={27} name="contacts"/><Text style={styles.button_name}>Kontakt {"\n"}do firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących odpady</Text></TouchableOpacity>
-    // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><MaterialCommunityIcons color="black" size={27} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text><Text style={styles.button_description}>Daty wywozów {"\n"}odpadów</Text></TouchableOpacity>
-    // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><MaterialCommunityIcons color="black" size={27} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text><Text style={styles.button_description}>Segregacja odpadów</Text></TouchableOpacity>
-    //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
-    //     </View>
+        //     <View style={styles.main_buttons_container}>
+        //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><Entypo color="black" size={27} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
+        //             <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
+        //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><MaterialCommunityIcons color="black" size={27} name="dump-truck"/><Text style={styles.button_name}>Najbliższy{"\n"} wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
+        // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><AntDesign color="black" size={27} name="contacts"/><Text style={styles.button_name}>Kontakt {"\n"}do firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących odpady</Text></TouchableOpacity>
+        // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><MaterialCommunityIcons color="black" size={27} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text><Text style={styles.button_description}>Daty wywozów {"\n"}odpadów</Text></TouchableOpacity>
+        // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><MaterialCommunityIcons color="black" size={27} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text><Text style={styles.button_description}>Segregacja odpadów</Text></TouchableOpacity>
+        //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
+        //     </View>
     );
 }
 
@@ -117,7 +144,6 @@ const styles = StyleSheet.create({
     },
 
     button_name: {
-        float: 'left',
         textAlign: 'center',
         color: 'black',
         fontSize: 19,
@@ -166,13 +192,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
         textAlign: 'center'
     },
-    new_user_settings:{
+    new_user_settings: {
         backgroundColor: 'yellow',
-        position:'absolute',
-        top:10,
-        width:'95%',
-        height:'100%',
-        elevation:3,
-        zIndex:3,
+        position: 'absolute',
+        top: 10,
+        width: '95%',
+        height: '100%',
+        elevation: 3,
+        zIndex: 3,
     }
 });

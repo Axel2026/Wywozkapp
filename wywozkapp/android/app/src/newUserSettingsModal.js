@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "
 import {Picker} from '@react-native-community/picker';
 import { AsyncStorage } from 'react-native';
 
-const newUserSettingsModal = ({navigation}) => {
+const NewUserSettingsModal = ({navigation}) => {
 
     const [city,setCity] = useState();
     const [street,setStreet] = useState();
@@ -69,7 +69,7 @@ const newUserSettingsModal = ({navigation}) => {
     );
 };
 
-export default newUserSettingsModal;
+export default NewUserSettingsModal;
 
 const styles = StyleSheet.create({
     header_text: {
