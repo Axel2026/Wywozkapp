@@ -18,6 +18,7 @@
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/stack": "^6.1.1",
+    "axios": "^0.25.0",
     "react": "17.0.2",
     "react-native": "0.67.2",
     "react-native-gesture-handler": "^2.2.0",
@@ -30,7 +31,8 @@
     "react-native-vector-icons": "^9.0.0",
     "react-navigation": "^4.4.4",
     "react-navigation-selective-tab-bar": "^1.0.3",
-    "react-navigation-tabs": "^2.11.2"
+    "react-navigation-tabs": "^2.11.2",
+    "react-wavify": "^1.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
