@@ -9,8 +9,7 @@ import {AsyncStorage} from 'react-native';
 
 const MainPage = ({navigation}) => {
 
-    const [latitude, setLatitude] = useState(0);
-    const [longitude, setLongitude] = useState(0);
+
     const [city, setCity] = useState();
     const [street, setStreet] = useState();
     const [houseNumber, setHouseNumber] = useState();
@@ -43,23 +42,7 @@ const MainPage = ({navigation}) => {
 
         _retrieveData()
 
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000,
-        })
-            .then(location => {
-                setLatitude(location.latitude)
-                setLongitude(location.longitude)
-                fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + latitude + ',' + longitude + '&key=' + 'AIzaSyARsjm6KomoMKnzAvBeJmFi9pzCv0ZOX38')
-                    .then((response) => response.json())
-                    .then((responseJson) => {
-                        console.log('Address: ' + JSON.stringify(responseJson));
-                    })
-            })
-            .catch(error => {
-                const {code, message} = error;
-                console.warn(code, message);
-            })
+
 
     }, [])
 
