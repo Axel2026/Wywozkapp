@@ -13,6 +13,7 @@ const NewUserSettingsModal = ({navigation}) => {
     const [latitude, setLatitude] = useState(0);
     const [longitude, setLongitude] = useState(0);
     const [isLocationLoading, setIsLocationLoading] =useState(false)
+    const [address, setAddress] = useState(0)
 
     const saveSettings = () =>{
         //alert("Zapisuję city="+city + ' street=' + street + ' number='+houseNumber)
@@ -26,6 +27,34 @@ const NewUserSettingsModal = ({navigation}) => {
         AsyncStorage.setItem('STORAGE_USER_SETTINGS', JSON.stringify(payload))
         navigation.navigate("Home")
     }
+    function getAddressFromCoordinates({ latitude, longitude }) {
+        return new Promise((resolve) => {
+            const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=glDPcNHhGcxDWLac9fvMIEUDcXj9HOoJIEjTSA4CTlI&mode=retrieveAddresses&prox=${latitude},${longitude}`
+            fetch(url)
+                .then(res => res.json())
+                .then((resJson) => {
+                    if (resJson
+                        && resJson.Response
+                        && resJson.Response.View
+                        && resJson.Response.View[0]
+                        && resJson.Response.View[0].Result
+                        && resJson.Response.View[0].Result[0]) {
+                        resolve(resJson.Response.View[0].Result[0].Location.Address.Label)
+                        console.log(resJson.Response.View[0].Result[0].Location.Address)
+                        setCity(resJson.Response.View[0].Result[0].Location.Address.District)
+                        setStreet(resJson.Response.View[0].Result[0].Location.Address.Street)
+                        setHouseNumber(resJson.Response.View[0].Result[0].Location.Address.HouseNumber)
+                    } else {
+                        resolve()
+                        console.log(latitude,longitude)
+                    }
+                })
+                .catch((e) => {
+                    console.log('Error in getAddressFromCoordinates', e)
+                    resolve()
+                })
+        })
+    }
     const getLocation = () =>{
         setIsLocationLoading(true)
         GetLocation.getCurrentPosition({
@@ -35,12 +64,11 @@ const NewUserSettingsModal = ({navigation}) => {
             .then(location => {
                 setLatitude(location.latitude)
                 setLongitude(location.longitude)
-                fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + latitude + ',' + longitude + '&key=' + 'AIzaSyARsjm6KomoMKnzAvBeJmFi9pzCv0ZOX38')
+                fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + latitude + ',' + longitude + '&key=' + 'glDPcNHhGcxDWLac9fvMIEUDcXj9HOoJIEjTSA4CTlI')
                     .then((response) => response.json())
                     .then((responseJson) => {
+                        getAddressFromCoordinates({latitude,longitude})
                         setIsLocationLoading(false)
-                        console.log('Address: ' + JSON.stringify(responseJson));
-                        alert('Address: ' + JSON.stringify(responseJson));
                     })
             })
             .catch(error => {
