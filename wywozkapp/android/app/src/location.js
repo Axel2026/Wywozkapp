@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View, RefreshControl, ScrollView} from "react-native";
+
 const axios = require('axios');
 // (data, dzien tygodnia, miejsce, ulica?, pogoda)
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {useTheme} from '@react-navigation/native';
 
 
 const Location = ({navigation}) => {
+
+    const {colors} = useTheme()
 
     const [city, setCity] = useState();
     const [cityWeather, setCityWeather] = useState();
@@ -94,7 +98,11 @@ const Location = ({navigation}) => {
     }, []);
 
     return (
-        <ScrollView style={styles.location_view}
+        <ScrollView style={{
+            display: 'flex',
+            flex: 1,
+            backgroundColor: colors.backgroundColor
+        }}
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -103,23 +111,82 @@ const Location = ({navigation}) => {
                     }
         >
 
-            <View style={styles.location_date}>
-                <AntDesign color="black" size={35} name="calendar"/>
-                <Text style={styles.date_text}>{setDate()}</Text>
-                <Text style={styles.dayname_text}>{setDay()}</Text>
+            <View style={{
+                color: 'black',
+                backgroundColor: colors.blockColor,
+                // height: '20%',
+                flex: 2,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 20,
+            }}>
+                <AntDesign color={colors.textAndIconColor} size={35} name="calendar"/>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontSize: 30,
+                    fontFamily: 'Poppins-Medium',
+                }}>{setDate()}</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontSize: 23,
+                    fontFamily: 'Poppins-SemiBold',
+                }}>{setDay()}</Text>
             </View>
-            <View style={styles.address_view}>
-                <MaterialCommunityIcons color="black" size={50} name="home-city-outline"/>
-                <Text style={styles.address_city}>{city}</Text>
-                <Text style={styles.address_street}>{street} {houseNumber}</Text>
+            <View style={{
+                display: 'flex',
+                flex: 3,
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 20,
+            }}>
+                <MaterialCommunityIcons color={colors.textAndIconColor} size={50} name="home-city-outline"/>
+                <Text style={{
+                    fontSize: 30,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-SemiBold',
+                }}>{city}</Text>
+                <Text style={{
+                    fontSize: 15,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Regular',
+                }}>{street} {houseNumber}</Text>
             </View>
-            <View style={styles.weather_view}>
-                <MaterialCommunityIcons color="black" size={70} name="weather-cloudy"/>
-                <Text style={styles.weather_header}>Pogoda w miejscowości: {cityWeather}</Text>
-                <Text style={styles.weather_units}>Temperatura: {Math.round(temperature * 100) / 100} °C </Text>
-                <Text style={styles.weather_units}>Ciśnienie: {pressure} hPa</Text>
-                <Text style={styles.weather_units}>Wilgotność: {humidity}%</Text>
-                <Text style={styles.weather_units}>Szybkość wiatru: {windSpeed} km/h</Text>
+            <View style={{
+                display: 'flex',
+                flex: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <MaterialCommunityIcons color={colors.textAndIconColor} size={70} name="weather-cloudy"/>
+                <Text style={{
+                    fontSize: 20,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-SemiBold',
+                    textAlign: 'center'
+                }}>Pogoda w miejscowości: {cityWeather}</Text>
+                <Text style={{
+                    fontSize: 15,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Regular',
+                }}>Temperatura: {Math.round(temperature * 100) / 100} °C </Text>
+                <Text style={{
+                    fontSize: 15,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Regular',
+                }}>Ciśnienie: {pressure} hPa</Text>
+                <Text style={{
+                    fontSize: 15,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Regular',
+                }}>Wilgotność: {humidity}%</Text>
+                <Text style={{
+                    fontSize: 15,
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Regular',
+                }}>Szybkość wiatru: {windSpeed} km/h</Text>
             </View>
 
         </ScrollView>

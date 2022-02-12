@@ -9,10 +9,13 @@ import NextGarbage from "./nextGarbage";
 import Contact from "./contact";
 import RecyclingInfo from "./recyclingInfo";
 import Location from "./location";
-
+import {useTheme} from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigation() {
+
+    const {colors} = useTheme()
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -30,11 +33,11 @@ export default function TabNavigation() {
 
                 tabBarIcon: () => {
                     if (route.name === 'Home') {
-                        return <MaterialIcons color="black" size={35} name="home"/>
+                        return <MaterialIcons color={colors.textAndIconColor} size={35} name="home"/>
                     } else if (route.name === 'Settings') {
-                        return <MaterialIcons color="black" size={35} name="settings"/>
+                        return <MaterialIcons color={colors.textAndIconColor} size={35} name="settings"/>
                     } else if (route.name === 'GarbageSchedule') {
-                        return <MaterialCommunityIcons color="black" size={35} name="timetable"/>
+                        return <MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="timetable"/>
                     }
                 },
             })}

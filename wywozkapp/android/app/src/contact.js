@@ -1,17 +1,50 @@
 import React from 'react';
 import {StyleSheet, Text, View, Linking, Platform} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 
-const Contact  = () => {
+const Contact = () => {
+
+    const {colors} = useTheme()
+
     const dialCall = (number) => {
         let phoneNumber = '';
-        if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
-        else {phoneNumber = `telprompt:${number}`; }
+        if (Platform.OS === 'android') {
+            phoneNumber = `tel:${number}`;
+        } else {
+            phoneNumber = `telprompt:${number}`;
+        }
         Linking.openURL(phoneNumber);
     };
     return (
-        <View>
-            <View style={styles.paper}><Text style={styles.header}>MPGK Tarnów</Text>
-                <Text style={styles.main} onPress={()=>{dialCall(123456789)}}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text>123456789</Text>
+        <View style={{
+            display: 'flex',
+            flex: 1,
+            backgroundColor: colors.backgroundColor,
+        }}>
+            <View style={{
+                borderRadius: 20,
+                marginBottom: 10,
+                margin: 5,
+                marginTop: 10,
+                padding: 15,
+                backgroundColor: "blue",
+                color: 'white',
+            }}><Text style={{
+                fontSize: 40,
+                color: 'white',
+                textAlign: 'center'
+            }}>MPGK Tarnów</Text>
+                <Text style={{
+                    color: 'white',
+                    fontSize: 19
+                }} onPress={() => {
+                    dialCall(123456789)
+                }}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: 15
+                    }}>{'\n'}{'\u2B24'}
+                    </Text>123456789</Text>
             </View>
         </View>
     );

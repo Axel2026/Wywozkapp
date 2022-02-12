@@ -1,22 +1,46 @@
 import React from 'react';
-import {StyleSheet,ScrollView, Text, View} from 'react-native';
+import {StyleSheet, ScrollView, Text, View} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 
 const Separator = () => (
-    <View style={styles.separator} />
+    <View style={{
+        marginVertical: 8,
+        borderBottomColor: '#737373',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+    }}/>
 );
 
-const GarbageCollection  = () => {
+const GarbageCollection = () => {
+
+    const {colors} = useTheme();
+
     return (
-        <ScrollView>
-            <Text style={styles.confused}>
-            10 luty zmieszane
-        </Text>
-            <Separator />
-            <Text style={styles.bio}>
+        <ScrollView style={{
+            display: 'flex',
+            flex: 1,
+            backgroundColor: colors.backgroundColor,
+        }}>
+            <Text style={{
+                textAlign: 'center',
+                marginVertical: 8,
+                color: 'grey'
+            }}>
+                10 luty zmieszane
+            </Text>
+            <Separator/>
+            <Text style={{
+                textAlign: 'center',
+                marginVertical: 8,
+                color: 'brown'
+            }}>
                 10 luty bio
             </Text>
             <Separator/>
-            <Text style={styles.metals}>
+            <Text style={{
+                textAlign: 'center',
+                marginVertical: 8,
+                color: 'orange'
+            }}>
                 21 lut metale
             </Text>
             <Separator/>
@@ -33,17 +57,17 @@ const styles = StyleSheet.create({
     confused: {
         textAlign: 'center',
         marginVertical: 8,
-        color:'grey'
+        color: 'grey'
     },
     bio: {
         textAlign: 'center',
         marginVertical: 8,
-        color:'brown'
+        color: 'brown'
     },
     metals: {
         textAlign: 'center',
         marginVertical: 8,
-        color:'orange'
+        color: 'orange'
     },
     fixToText: {
         flexDirection: 'row',

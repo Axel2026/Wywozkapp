@@ -1,9 +1,11 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import {useTheme} from '@react-navigation/native';
 
 const NextGarbage = () => {
+
+    const {colors} = useTheme()
 
     const json_data = [
         {
@@ -45,10 +47,48 @@ const NextGarbage = () => {
     ]
 
     const Item = ({data}) => (
-        <View style={styles.item}>
-            <View style={styles.date_box}><Text style={styles.date_box_text}>{data.date.substr(0,2)} {data.month}</Text></View>
-            <View style={styles.name_box}><Text style={styles.name_box_text}>{data.name}</Text></View>
-            <View style={styles.trash_box}><AntDesign color="black" size={42} name="delete"/></View>
+        <View style={{
+            backgroundColor: colors.greyTint,
+            marginBottom: 2,
+            height: 70,
+            width: '100%',
+            borderLeftWidth: 7,
+            borderColor: "#e2dd39",
+            display: 'flex',
+            flexDirection: 'row'
+        }}>
+            <View style={{
+                backgroundColor: colors.greyTint,
+                aspectRatio: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}><Text style={{
+                color: colors.textAndIconColor,
+                fontSize: 25,
+                textAlign: 'center',
+                fontFamily: 'Poppins-Medium',
+            }}>{data.date.substr(0, 2)} {data.month}</Text></View>
+            <View style={{
+                backgroundColor: colors.greyTint,
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                paddingLeft: 10,
+            }}><Text style={{
+                color: colors.textAndIconColor,
+                fontSize: 18,
+                textAlign: 'left',
+                fontFamily: 'Poppins-Regular',
+            }}>{data.name}</Text></View>
+            <View style={{
+                backgroundColor: colors.greyTint,
+                display: 'flex',
+                aspectRatio: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}><AntDesign color={colors.textAndIconColor} size={42} name="delete"/></View>
         </View>
     );
 
@@ -58,12 +98,33 @@ const NextGarbage = () => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.header_text}>Najbliższy wywóz w twojej lokalizacji
+        <View style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: colors.backgroundColor,
+            flex: 1,
+        }}>
+            <View style={{
+                backgroundColor: colors.blockColor,
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'center',
+                padding: 5,
+                width: '100%'
+            }}>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontSize: 21,
+                    textAlign: 'center',
+                    fontFamily: 'Poppins-Medium',
+                }}>Najbliższy wywóz w twojej lokalizacji
                 </Text>
             </View>
-            <View style={styles.flatlist}>
+            <View style={{
+                // backgroundColor: "#ffffff",
+                width: '97%',
+                marginTop: 5,
+            }}>
                 <FlatList
                     data={json_data[0].garbageCollections}
                     renderItem={renderItem}
@@ -77,9 +138,9 @@ const NextGarbage = () => {
 export default NextGarbage;
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         display: 'flex',
-        alignItems:'center',
+        alignItems: 'center',
     },
     header: {
         backgroundColor: "#85BB76",
@@ -87,7 +148,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         padding: 5,
-        width:'100%'
+        width: '100%'
     },
     header_text: {
         color: 'black',
@@ -98,7 +159,7 @@ const styles = StyleSheet.create({
     flatlist: {
         backgroundColor: "#ffffff",
         width: '97%',
-        marginTop:5,
+        marginTop: 5,
     },
     item: {
         backgroundColor: "#d5d5d5",
@@ -106,40 +167,40 @@ const styles = StyleSheet.create({
         height: 70,
         width: '100%',
         borderLeftWidth: 7,
-        borderColor:"#e2dd39",
-        display:'flex',
-        flexDirection:'row'
+        borderColor: "#e2dd39",
+        display: 'flex',
+        flexDirection: 'row'
     },
-    date_box:{
+    date_box: {
         backgroundColor: "#d5d5d5",
         aspectRatio: 1,
-        display:'flex',
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    date_box_text:{
+    date_box_text: {
         color: 'black',
         fontSize: 25,
         textAlign: 'center',
         fontFamily: 'Poppins-Medium',
     },
-    name_box:{
+    name_box: {
         backgroundColor: "#d5d5d5",
-        flex:1,
-        display:'flex',
+        flex: 1,
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingLeft:10,
+        paddingLeft: 10,
     },
-    name_box_text:{
+    name_box_text: {
         color: 'black',
         fontSize: 18,
         textAlign: 'left',
         fontFamily: 'Poppins-Regular',
     },
-    trash_box:{
+    trash_box: {
         backgroundColor: "#d5d5d5",
-        display:'flex',
+        display: 'flex',
         aspectRatio: 1,
         justifyContent: 'center',
         alignItems: 'center',
