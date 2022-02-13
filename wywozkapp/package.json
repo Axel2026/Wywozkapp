@@ -36,12 +36,13 @@
     "react-navigation": "^4.4.4",
     "react-navigation-selective-tab-bar": "^1.0.3",
     "react-navigation-tabs": "^2.11.2",
-    "react-wavify": "^1.5.4"
+    "react-redux": "^7.2.6",
+    "react-wavify": "^1.5.4",
+    "redux": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
-    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.6.3",
     "eslint": "7.14.0",

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {AsyncStorage, ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {Picker} from '@react-native-community/picker';
-import AsyncStorage from '@react-native-community/async-storage';
 import GetLocation from "react-native-get-location";
 
 const NewUserSettingsModal = ({navigation}) => {

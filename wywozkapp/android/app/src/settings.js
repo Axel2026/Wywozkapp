@@ -13,10 +13,15 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {useTheme} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux'
 
 const Settings = () => {
 
     const {colors} = useTheme();
+    const dispatch = useDispatch()
+    const currentTheme = useSelector(state=>{
+        return state.myDarkMode
+    })
 
     const [automaticLocation, setAutomaticLocation] = useState(false);
     const [darkTheme, setDarkTheme] = useState(false);
@@ -33,6 +38,7 @@ const Settings = () => {
 
     function onDarkThemeSwitch() {
         setDarkTheme(!darkTheme)
+        dispatch({type: "change_theme", payload: !currentTheme})
         console.log(darkTheme)
     }
 

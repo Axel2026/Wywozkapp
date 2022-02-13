@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, RefreshControl, ScrollView} from "react-native";
-import AsyncStorage from '@react-native-community/async-storage';
+import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View, RefreshControl, ScrollView} from "react-native";
 
 const axios = require('axios');
 // (data, dzien tygodnia, miejsce, ulica?, pogoda)

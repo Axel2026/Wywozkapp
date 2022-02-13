@@ -66,7 +66,6 @@ const NextGarbage = () => {
             <View style={styles.date_box}><Text style={styles.date_box_text}>{data.date.substr(0,2)} {data.month}</Text></View>
             <View style={styles.name_box}><Text style={styles.name_box_text}>{data.name}</Text></View>
             <View style={styles.trash_box}><AntDesign style={styles.shadow} color={garbage_colors[data.type]} size={42} name="delete"/></View>
-
         </View>
     );
 
