@@ -4,12 +4,6 @@ import {NavigationContainer, DarkTheme, DefaultTheme} from '@react-navigation/na
 import {createStackNavigator} from '@react-navigation/stack';
 import TabNavigation from "./android/app/src/TabNavigation";
 import SplashScreen from "react-native-splash-screen";
-import Contact from "./android/app/src/contact";
-import Location from "./android/app/src/location";
-import GarbageSchedule from "./android/app/src/garbageSchedule";
-import NextGarbage from "./android/app/src/nextGarbage";
-import RecyclingInfo from "./android/app/src/recyclingInfo";
-import Settings from "./android/app/src/settings";
 import newUserSettingsModal from "./android/app/src/newUserSettingsModal";
 import {Provider, useSelector} from 'react-redux'
 import {createStore, combineReducers} from "redux";
@@ -24,7 +18,9 @@ const customDarkTheme = {
         backgroundColor: "#222222",
         blockColor: "#3D5736",
         textAndIconColor: "white",
-        greyTint: "#444444"
+        greyTint: "#444444",
+        modalSettings: "#343434",
+        settingsBackground: "#444444",
     }
 }
 
@@ -35,7 +31,9 @@ const customDefaultTheme = {
         backgroundColor: "#f2f2f2",
         blockColor: "#85BB76",
         textAndIconColor: "black",
-        greyTint: "#d5d5d5"
+        greyTint: "#d5d5d5",
+        modalSettings: "white",
+        settingsBackground: "#EFEFF4",
     }
 }
 
@@ -73,14 +71,3 @@ export function Navigation() {
         </NavigationContainer>
     );
 }
-
-
-// export default () => {
-//     return (
-//         <Provider store={store}>
-//             <App/>
-//         </Provider>
-//     )
-// }
-
-
