@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {Picker} from '@react-native-community/picker';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import GetLocation from "react-native-get-location";
 
 const NewUserSettingsModal = ({navigation}) => {
@@ -33,6 +33,7 @@ const NewUserSettingsModal = ({navigation}) => {
             fetch(url)
                 .then(res => res.json())
                 .then((resJson) => {
+                    console.log(resJson)
                     if (resJson
                         && resJson.Response
                         && resJson.Response.View

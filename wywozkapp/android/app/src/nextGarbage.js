@@ -1,10 +1,17 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import { AnimatedFlatList, AnimationType } from 'flatlist-intro-animations';
 
 const NextGarbage = () => {
 
+    const garbage_colors={
+        paper: '#2b81a6',
+        glass: '#2f7b25',
+        bio: '#5a4343',
+        mixed: '#323030',
+        metals: '#ccc841',
+    }
     const json_data = [
         {
             'location': 'Tuchów',
@@ -44,11 +51,17 @@ const NextGarbage = () => {
         }
     ]
 
+    const garbageColorStyles = (type) =>  {
+        return {
+            borderColor:garbage_colors[type]
+        }
+    };
+
     const Item = ({data}) => (
-        <View style={styles.item}>
+        <View style={[styles.item,garbageColorStyles(data.type)]}>
             <View style={styles.date_box}><Text style={styles.date_box_text}>{data.date.substr(0,2)} {data.month}</Text></View>
             <View style={styles.name_box}><Text style={styles.name_box_text}>{data.name}</Text></View>
-            <View style={styles.trash_box}><AntDesign color="black" size={42} name="delete"/></View>
+            <View style={styles.trash_box}><AntDesign style={styles.shadow} color={garbage_colors[data.type]} size={42} name="delete"/></View>
         </View>
     );
 
@@ -64,10 +77,12 @@ const NextGarbage = () => {
                 </Text>
             </View>
             <View style={styles.flatlist}>
-                <FlatList
+                <AnimatedFlatList
                     data={json_data[0].garbageCollections}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    animationType={AnimationType.Fade}
+                    animationDuration={800}
                 />
             </View>
         </View>
@@ -106,7 +121,6 @@ const styles = StyleSheet.create({
         height: 70,
         width: '100%',
         borderLeftWidth: 7,
-        borderColor:"#e2dd39",
         display:'flex',
         flexDirection:'row'
     },
@@ -144,4 +158,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    shadow:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.39,
+        shadowRadius: 8.30,
+
+        elevation: 13,
+    }
 })

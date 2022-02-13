@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View, RefreshControl, ScrollView} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View, RefreshControl, ScrollView} from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 const axios = require('axios');
 // (data, dzien tygodnia, miejsce, ulica?, pogoda)
 import AntDesign from "react-native-vector-icons/AntDesign";
