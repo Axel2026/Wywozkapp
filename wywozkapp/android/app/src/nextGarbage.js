@@ -1,6 +1,7 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
+import {useTheme} from '@react-navigation/native';
 import { AnimatedFlatList, AnimationType } from 'flatlist-intro-animations';
 
 const NextGarbage = () => {
@@ -12,6 +13,9 @@ const NextGarbage = () => {
         mixed: '#323030',
         metals: '#ccc841',
     }
+
+    const {colors} = useTheme()
+
     const json_data = [
         {
             'location': 'Tuchów',
@@ -62,6 +66,7 @@ const NextGarbage = () => {
             <View style={styles.date_box}><Text style={styles.date_box_text}>{data.date.substr(0,2)} {data.month}</Text></View>
             <View style={styles.name_box}><Text style={styles.name_box_text}>{data.name}</Text></View>
             <View style={styles.trash_box}><AntDesign style={styles.shadow} color={garbage_colors[data.type]} size={42} name="delete"/></View>
+
         </View>
     );
 
@@ -71,13 +76,32 @@ const NextGarbage = () => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.header_text}>Najbliższy wywóz w twojej lokalizacji
+        <View style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: colors.backgroundColor,
+            flex: 1,
+        }}>
+            <View style={{
+                backgroundColor: colors.blockColor,
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'center',
+                padding: 5,
+                width: '100%'
+            }}>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontSize: 21,
+                    textAlign: 'center',
+                    fontFamily: 'Poppins-Medium',
+                }}>Najbliższy wywóz w twojej lokalizacji
                 </Text>
             </View>
+
             <View style={styles.flatlist}>
                 <AnimatedFlatList
+
                     data={json_data[0].garbageCollections}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
@@ -92,9 +116,9 @@ const NextGarbage = () => {
 export default NextGarbage;
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         display: 'flex',
-        alignItems:'center',
+        alignItems: 'center',
     },
     header: {
         backgroundColor: "#85BB76",
@@ -102,7 +126,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         padding: 5,
-        width:'100%'
+        width: '100%'
     },
     header_text: {
         color: 'black',
@@ -113,7 +137,7 @@ const styles = StyleSheet.create({
     flatlist: {
         backgroundColor: "#ffffff",
         width: '97%',
-        marginTop:5,
+        marginTop: 5,
     },
     item: {
         backgroundColor: "#d5d5d5",
@@ -121,39 +145,42 @@ const styles = StyleSheet.create({
         height: 70,
         width: '100%',
         borderLeftWidth: 7,
-        display:'flex',
-        flexDirection:'row'
+
+        borderColor: "#e2dd39",
+        display: 'flex',
+        flexDirection: 'row'
+
     },
-    date_box:{
+    date_box: {
         backgroundColor: "#d5d5d5",
         aspectRatio: 1,
-        display:'flex',
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    date_box_text:{
+    date_box_text: {
         color: 'black',
         fontSize: 25,
         textAlign: 'center',
         fontFamily: 'Poppins-Medium',
     },
-    name_box:{
+    name_box: {
         backgroundColor: "#d5d5d5",
-        flex:1,
-        display:'flex',
+        flex: 1,
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingLeft:10,
+        paddingLeft: 10,
     },
-    name_box_text:{
+    name_box_text: {
         color: 'black',
         fontSize: 18,
         textAlign: 'left',
         fontFamily: 'Poppins-Regular',
     },
-    trash_box:{
+    trash_box: {
         backgroundColor: "#d5d5d5",
-        display:'flex',
+        display: 'flex',
         aspectRatio: 1,
         justifyContent: 'center',
         alignItems: 'center',

@@ -12,8 +12,11 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {useTheme} from '@react-navigation/native';
 
 const Settings = () => {
+
+    const {colors} = useTheme();
 
     const [automaticLocation, setAutomaticLocation] = useState(false);
     const [darkTheme, setDarkTheme] = useState(false);
@@ -63,43 +66,102 @@ const Settings = () => {
     }
 
     return (
-        <View style={{backgroundColor: '#EFEFF4', flex: 1}}>
-            <View style={{borderBottomWidth: 1, backgroundColor: '#f7f7f8', borderColor: '#c8c7cc'}}>
+        <View style={{backgroundColor: colors.backgroundColor, flex: 1}}>
+            <View style={{borderBottomWidth: 1, backgroundColor: colors.backgroundColor, borderColor: '#c8c7cc'}}>
                 <Text style={{
                     fontFamily: 'Poppins-Bold',
                     alignSelf: 'center',
                     marginTop: 15,
                     marginBottom: 15,
                     fontWeight: 'bold',
-                    fontSize: 20
+                    fontSize: 20,
+                    color: colors.textAndIconColor
                 }}>Settings</Text>
             </View>
             <Modal
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}>
-                <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{modalData[0] + ": "}</Text>
-                        <TextInput style={styles.input} placeholder={modalData[1]}
+                <Pressable onPress={() => setModalVisible(!modalVisible)} style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: '#00000080',
+                }}>
+                    <View style={{
+                        margin: 20,
+                        backgroundColor: colors.greyTint,
+                        borderRadius: 10,
+                        width: '70%',
+                        paddingTop: 35,
+                        paddingLeft: 35,
+                        paddingRight: 35,
+                        paddingBottom: 15,
+                        alignItems: "center",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 2
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 4,
+                        elevation: 5
+                    }}>
+                        <Text style={{
+                            fontFamily: 'Poppins-Bold',
+                            marginBottom: 15,
+                            width: '100%',
+                            textAlign: "left",
+                            fontWeight: 'bold',
+                            fontSize: 17,
+                            color: colors.textAndIconColor
+                        }}>{modalData[0] + ": "}</Text>
+                        <TextInput style={{
+                            fontFamily: 'Poppins-regular',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            borderColor: "grey",
+                            width: '100%',
+                            color: colors.textAndIconColord,
+                        }} placeholder={modalData[1]}
                                    onChangeText={modalData[0] === "Miasto" ? (newText => setCity(newText)) : (modalData[0] === "Ulica" ? (newText => setStreet(newText)) : (newText => setHouseNumber(newText)))}/>
                         <Pressable
-                            style={styles.button}
+                            style={{
+                                borderRadius: 10,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: colors.blockColor,
+                                alignSelf: 'flex-end',
+                                marginTop: 20,
+                            }}
                             onPress={() => {
                                 setModalVisible(!modalVisible);
                             }}>
-                            <Text style={styles.textStyle}>Zapisz</Text>
+                            <Text style={{
+                                fontFamily: 'Poppins-Bold',
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>Zapisz</Text>
                         </Pressable>
                     </View>
                 </Pressable>
             </Modal>
-            <View style={{backgroundColor: '#EFEFF4', flex: 1, fontFamily: 'Poppins-Bold'}}>
-                <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+            <View style={{backgroundColor: colors.greyTint, flex: 1, fontFamily: 'Poppins-Bold'}}>
+                <SettingsList borderColor='#c8c7cc' defaultItemSize={50} backgroundColor={colors.greyTint}>
                     <SettingsList.Header
-                        headerStyle={{fontFamily: 'Poppins-Bold', marginTop: 15, fontWeight: 'bold', fontSize: 16}}
+                        headerStyle={{
+                            color: colors.textAndIconColor,
+                            fontFamily: 'Poppins-Bold',
+                            marginTop: 15,
+                            fontWeight: 'bold',
+                            fontSize: 16
+                        }}
                         headerText="Lokalizacja"/>
                     <SettingsList.Item
-                        icon={<MaterialIcons color="black" size={25} style={styles.imageStyle} name="my-location"/>}
+                        titleStyle={{color: colors.textAndIconColor}}
+                        icon={<MaterialIcons color={colors.textAndIconColor} size={25} style={styles.imageStyle}
+                                             name="my-location"/>}
                         hasSwitch={true}
                         switchOnValueChange={onAutomaticLocationSwitch}
                         switchState={automaticLocation}
@@ -107,9 +169,13 @@ const Settings = () => {
                         title='Automatyczna lokalizacja'
                     />
                     <SettingsList.Item
-                        icon={<MaterialIcons color="black" size={25} style={styles.imageStyle} name="location-city"/>}
+                        icon={<MaterialIcons color={colors.textAndIconColor} size={25} style={styles.imageStyle}
+                                             name="location-city"/>}
                         title='Miasto'
-                        titleStyle={automaticLocation === true ? {color: "#DCDCDC", fontSize: 16} : false}
+                        titleStyle={automaticLocation === true ? {
+                            color: "#DCDCDC",
+                            fontSize: 16
+                        } : {color: colors.textAndIconColor}}
                         titleInfo={city}
                         titleInfoStyle={styles.titleInfoStyle}
                         onPress={automaticLocation === true ? (() => {
@@ -119,9 +185,13 @@ const Settings = () => {
                         })}
                     />
                     <SettingsList.Item
-                        icon={<MaterialCommunityIcons color="black" size={25} style={styles.imageStyle} name="road"/>}
+                        icon={<MaterialCommunityIcons color={colors.textAndIconColor} size={25}
+                                                      style={styles.imageStyle} name="road"/>}
                         title='Ulica'
-                        titleStyle={automaticLocation === true ? {color: "#DCDCDC", fontSize: 16} : false}
+                        titleStyle={automaticLocation === true ? {
+                            color: "#DCDCDC",
+                            fontSize: 16
+                        } : {color: colors.textAndIconColor}}
                         titleInfo={street}
                         titleInfoStyle={styles.titleInfoStyle}
                         onPress={automaticLocation === true ? (() => {
@@ -131,9 +201,13 @@ const Settings = () => {
                         })}
                     />
                     <SettingsList.Item
-                        icon={<MaterialIcons color="black" size={25} style={styles.imageStyle} name="house"/>}
+                        icon={<MaterialIcons color={colors.textAndIconColor} size={25} style={styles.imageStyle}
+                                             name="house"/>}
                         title='Numer domu'
-                        titleStyle={automaticLocation === true ? {color: "#DCDCDC", fontSize: 16} : false}
+                        titleStyle={automaticLocation === true ? {
+                            color: "#DCDCDC",
+                            fontSize: 16
+                        } : {color: colors.textAndIconColor}}
                         titleInfo={houseNumber}
                         titleInfoStyle={styles.titleInfoStyle}
                         onPress={automaticLocation === true ? (() => {
@@ -142,20 +216,26 @@ const Settings = () => {
                             setModalData(["Numer domu", houseNumber])
                         })}
                     />
-                    <SettingsList.Header headerStyle={{marginTop: 20, fontWeight: 'bold', fontSize: 16}}
-                                         headerText="Powiadomienia"/>
+                    <SettingsList.Header
+                        headerStyle={{marginTop: 20, fontWeight: 'bold', fontSize: 16, color: colors.textAndIconColor}}
+                        headerText="Powiadomienia"/>
                     <SettingsList.Item
-                        icon={<MaterialCommunityIcons color="black" size={25} style={styles.imageStyle}
+                        icon={<MaterialCommunityIcons color={colors.textAndIconColor} size={25}
+                                                      style={styles.imageStyle}
                                                       name="clock-time-two-outline"/>}
+                        titleStyle={{color: colors.textAndIconColor}}
                         title='Czas powiadomień'
                         titleInfo={selectedReminderTime}
                         titleInfoStyle={styles.titleInfoStyle}
                         onPress={() => Alert.alert('Route To czas powiadomień Page')}
                     />
-                    <SettingsList.Header headerStyle={{marginTop: 20, fontWeight: 'bold', fontSize: 16}}
-                                         headerText="Wygląd"/>
+                    <SettingsList.Header
+                        headerStyle={{marginTop: 20, fontWeight: 'bold', fontSize: 16, color: colors.textAndIconColor}}
+                        headerText="Wygląd"/>
                     <SettingsList.Item
-                        icon={<MaterialCommunityIcons color="black" size={25} style={styles.imageStyle}
+                        titleStyle={{color: colors.textAndIconColor}}
+                        icon={<MaterialCommunityIcons color={colors.textAndIconColor} size={25}
+                                                      style={styles.imageStyle}
                                                       name="theme-light-dark"/>}
                         title='Tryb ciemny'
                         hasSwitch={true}
@@ -176,7 +256,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: 25,
         height: 26,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     centeredView: {
         flex: 1,
@@ -209,7 +289,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         backgroundColor: "#85BB76",
         alignSelf: 'flex-end',
-        marginTop: 20
+        marginTop: 20,
     },
     textStyle: {
         fontFamily: 'Poppins-Bold',

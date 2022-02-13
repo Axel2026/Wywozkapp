@@ -1,10 +1,13 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-
+import {useTheme} from '@react-navigation/native';
 
 const RecyclingInfo = () => {
+
+    const {colors} = useTheme()
+
     return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: colors.backgroundColor}}>
             <View style={styles.paper}><Text style={styles.header}>Papier</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> opakowania z papieru, karton,
                     tekturę (także falistą)</Text>
@@ -16,24 +19,24 @@ const RecyclingInfo = () => {
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zeszyty i książki</Text>
             </View>
             <View style={styles.glass}><Text style={styles.header}>Szkło</Text>
-               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki i słoiki po napojach
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki i słoiki po napojach
                     i żywności (w tym butelki po napojach alkoholowych i olejach roślinnych)</Text>
-               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> szklane opakowania po
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> szklane opakowania po
                     kosmetykach (jeżeli nie są wykonane z trwale połączonych kilku surowców)</Text>
             </View>
             <View style={styles.bio}><Text style={styles.header}>Bio</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> odpadki warzywne i owocowe (w
                     tym obierki itp.)</Text>
-               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> gałęzie drzew i
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> gałęzie drzew i
                     krzewów</Text>
-               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> skoszoną trawę, liście,
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> skoszoną trawę, liście,
                     kwiaty</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> trociny i korę drzew</Text>
-               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> resztki jedzenia</Text>
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> resztki jedzenia</Text>
             </View>
             <View style={styles.metals}><Text style={styles.header}>Metale i tworzywa sztuczne</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki plastikowe</Text>
-               <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> kartony po mleku i
+                <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> kartony po mleku i
                     napojach</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> torby i opakowania
                     plastikowe</Text>

@@ -5,7 +5,10 @@ import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import AsyncStorage from '@react-native-community/async-storage';
+
+import {AsyncStorage} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+
 
 const MainPage = ({navigation}) => {
 
@@ -13,6 +16,7 @@ const MainPage = ({navigation}) => {
     const [city, setCity] = useState();
     const [street, setStreet] = useState();
     const [houseNumber, setHouseNumber] = useState();
+    const {colors} = useTheme();
 
     function setDateLocationComponent() {
         const date = new Date();
@@ -43,60 +47,195 @@ const MainPage = ({navigation}) => {
         _retrieveData()
 
 
-
     }, [])
 
     return (
-        <View style={styles.main_buttons_container}>
-            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+        <View style={{
+            display: "flex",
+            justifyContent: "space-around",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            paddingTop: 20,
+            backgroundColor: colors.backgroundColor
+        }}>
+            <TouchableOpacity style={{
+                backgroundColor: colors.blockColor,
+                display: "flex",
+                borderColor: "grey",
+                borderWidth: 1,
+                borderRadius: 5,
+                justifyContent: "center",
+                textAlign: 'center',
+                alignItems: "center",
+                width: '45%',
+                aspectRatio: 1,
+                color: "black",
+                flex: 0,
+                marginTop: '5%'
+            }} onPress={() => {
                 navigation.navigate('Location')
-            }}><Entypo color="black" size={35} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
-                <Text style={styles.location_city}>{city}, {street} {houseNumber}</Text><Text
-                    style={styles.location_date}>{setDateLocationComponent()}</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+            }}><Entypo color={colors.textAndIconColor} size={35} name="location-pin"/>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.textAndIconColor,
+                    fontSize: 19,
+                    fontFamily: 'Poppins-Bold'
+                }}>Lokalizacja</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center',
+                }}>{city}, {street} {houseNumber}</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center',
+                }}>{setDateLocationComponent()}</Text></TouchableOpacity>
+            <TouchableOpacity style={{
+                backgroundColor: colors.blockColor,
+                display: "flex",
+                borderColor: "grey",
+                borderWidth: 1,
+                borderRadius: 5,
+                justifyContent: "center",
+                textAlign: 'center',
+                alignItems: "center",
+                width: '45%',
+                aspectRatio: 1,
+                color: "black",
+                flex: 0,
+                marginTop: '5%'
+            }} onPress={() => {
                 navigation.navigate('NextGarbage')
-            }}><MaterialCommunityIcons color="black" size={35} name="dump-truck"/><Text style={styles.button_name}>Najbliższy
-                wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text
-                style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+            }}><MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="dump-truck"/>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.textAndIconColor,
+                    fontSize: 19,
+                    fontFamily: 'Poppins-Bold'
+                }}>Najbliższy wywóz</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center'
+                }}>Sroda, 20.11.2020</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center'
+                }}>Smieci mieszane</Text></TouchableOpacity>
+            <TouchableOpacity style={{
+                backgroundColor: colors.blockColor,
+                display: "flex",
+                borderColor: "grey",
+                borderWidth: 1,
+                borderRadius: 5,
+                justifyContent: "center",
+                textAlign: 'center',
+                alignItems: "center",
+                width: '45%',
+                aspectRatio: 1,
+                color: "black",
+                flex: 0,
+                marginTop: '5%'
+            }} onPress={() => {
                 navigation.navigate('Contact')
-            }}><AntDesign color="black" size={35} name="contacts"/><Text style={styles.button_name}>Kontakt do
-                firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących
-                odpady</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+            }}><AntDesign color={colors.textAndIconColor} size={35} name="contacts"/>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.textAndIconColor,
+                    fontSize: 19,
+                    fontFamily: 'Poppins-Bold'
+                }}>Kontakt do firm</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center'
+                }}>Najważniejsze informacje o firmach wywożących odpady</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+                backgroundColor: colors.blockColor,
+                display: "flex",
+                borderColor: "grey",
+                borderWidth: 1,
+                borderRadius: 5,
+                justifyContent: "center",
+                textAlign: 'center',
+                alignItems: "center",
+                width: '45%',
+                aspectRatio: 1,
+                color: "black",
+                flex: 0,
+                marginTop: '5%'
+            }} onPress={() => {
                 navigation.navigate('GarbageSchedule')
-            }}><MaterialCommunityIcons color="black" size={35} name="timetable"/><Text style={styles.button_name}>Harmonogram
-                wywozów</Text><Text style={styles.button_description}>Daty
-                wywozów {"\n"}odpadów</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+            }}><MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="timetable"/>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.textAndIconColor,
+                    fontSize: 19,
+                    fontFamily: 'Poppins-Bold'
+                }}>Harmonogram wywozów</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center'
+                }}>Daty wywozów {"\n"}odpadów</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+                backgroundColor: colors.blockColor,
+                display: "flex",
+                borderColor: "grey",
+                borderWidth: 1,
+                borderRadius: 5,
+                justifyContent: "center",
+                textAlign: 'center',
+                alignItems: "center",
+                width: '45%',
+                aspectRatio: 1,
+                color: "black",
+                flex: 0,
+                marginTop: '5%'
+            }} onPress={() => {
                 navigation.navigate('RecyclingInfo')
-            }}><MaterialCommunityIcons color="black" size={35} name="recycle"/><Text style={styles.button_name}>Informacje
-                o recyklingu</Text><Text style={styles.button_description}>Segregacja odpadów</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.main_buttons} onPress={() => {
+            }}><MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="recycle"/>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.textAndIconColor,
+                    fontSize: 19,
+                    fontFamily: 'Poppins-Bold'
+                }}>Informacje o recyklingu</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontFamily: 'Poppins-Medium',
+                    textAlign: 'center'
+                }}>Segregacja odpadów</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+                backgroundColor: colors.blockColor,
+                display: "flex",
+                borderColor: "grey",
+                borderWidth: 1,
+                borderRadius: 5,
+                justifyContent: "center",
+                textAlign: 'center',
+                alignItems: "center",
+                width: '45%',
+                aspectRatio: 1,
+                color: "black",
+                flex: 0,
+                marginTop: '5%'
+            }} onPress={() => {
                 navigation.navigate('Settings')
-            }}><MaterialIcons color="black" size={50} name="settings"/><Text
-                style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
+            }}><MaterialIcons color={colors.textAndIconColor} size={50} name="settings"/>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.textAndIconColor,
+                    fontSize: 19,
+                    fontFamily: 'Poppins-Bold'
+                }}>Ustawienia</Text>
+            </TouchableOpacity>
         </View>
-
-        // <View style={styles.main_buttons_container}>
-        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><View style={styles.header}><Entypo color="black" size={27} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text></View>
-        //         <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
-        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="dump-truck"/><Text style={styles.button_name}>Najbliższy{"\n"} wywóz</Text></View><Text>Sroda, 20.11.2020</Text><Text>Smieci mieszane</Text></TouchableOpacity>
-        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><View style={styles.header}><AntDesign color="black" size={27} name="contacts"/><Text style={styles.button_name}>Kontakt {"\n"}do firm</Text></View></TouchableOpacity>
-        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text></View></TouchableOpacity>
-        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><View style={styles.header}><MaterialCommunityIcons color="black" size={27} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text></View></TouchableOpacity>
-        //     <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><View style={styles.header}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></View></TouchableOpacity>
-        // </View>
-
-        //     <View style={styles.main_buttons_container}>
-        //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Location')}}><Entypo color="black" size={27} name="location-pin"/><Text style={styles.button_name}>Lokalizacja</Text>
-        //             <Text style={styles.location_city}>{latitude}, {longitude}</Text><Text style={styles.location_date}>07.02.2022 18:02</Text></TouchableOpacity>
-        //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('NextGarbage')}}><MaterialCommunityIcons color="black" size={27} name="dump-truck"/><Text style={styles.button_name}>Najbliższy{"\n"} wywóz</Text><Text style={styles.button_description}>Sroda, 20.11.2020</Text><Text style={styles.button_description}>Smieci mieszane</Text></TouchableOpacity>
-        // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Contact')}}><AntDesign color="black" size={27} name="contacts"/><Text style={styles.button_name}>Kontakt {"\n"}do firm</Text><Text style={styles.button_description}>Najważniejsze informacje o firmach wywożących odpady</Text></TouchableOpacity>
-        // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('GarbageSchedule')}}><MaterialCommunityIcons color="black" size={27} name="timetable"/><Text style={styles.button_name}>Harmonogram wywozów</Text><Text style={styles.button_description}>Daty wywozów {"\n"}odpadów</Text></TouchableOpacity>
-        // <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('RecyclingInfo')}}><MaterialCommunityIcons color="black" size={27} name="recycle"/><Text style={styles.button_name}>Informacje o recyklingu</Text><Text style={styles.button_description}>Segregacja odpadów</Text></TouchableOpacity>
-        //         <TouchableOpacity style={styles.main_buttons} onPress={()=>{navigation.navigate('Settings')}}><MaterialIcons color="black" size={27} name="settings"/><Text style={styles.button_name}>Ustawienia</Text></TouchableOpacity>
-        //     </View>
     );
 }
 
