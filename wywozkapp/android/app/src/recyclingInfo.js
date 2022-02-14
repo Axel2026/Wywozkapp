@@ -18,13 +18,13 @@ const RecyclingInfo = () => {
                     zadrukowane kartki</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zeszyty i książki</Text>
             </View>
-            <View style={styles.glass}><Text style={styles.header}>Szkło</Text>
+            <View style={styles.glass}><Text style={styles.header2}>Szkło</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki i słoiki po napojach
                     i żywności (w tym butelki po napojach alkoholowych i olejach roślinnych)</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> szklane opakowania po
                     kosmetykach (jeżeli nie są wykonane z trwale połączonych kilku surowców)</Text>
             </View>
-            <View style={styles.bio}><Text style={styles.header}>Bio</Text>
+            <View style={styles.bio}><Text style={styles.header3}>Bio</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> odpadki warzywne i owocowe (w
                     tym obierki itp.)</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> gałęzie drzew i
@@ -34,7 +34,7 @@ const RecyclingInfo = () => {
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> trociny i korę drzew</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> resztki jedzenia</Text>
             </View>
-            <View style={styles.metals}><Text style={styles.header}>Metale i tworzywa sztuczne</Text>
+            <View style={styles.metals}><Text style={styles.header4}>Metale i tworzywa sztuczne</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> butelki plastikowe</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> kartony po mleku i
                     napojach</Text>
@@ -44,7 +44,7 @@ const RecyclingInfo = () => {
                     konserwach</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> nakrętki, kapsle</Text>
             </View>
-            <View style={styles.mixed}><Text style={styles.header}>Mieszane</Text>
+            <View style={styles.mixed}><Text style={styles.header5}>Mieszane</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zatłuszczony papier</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zabrudzone folie</Text>
                 <Text style={styles.main}><Text style={styles.dot}>{'\n'}{'\u2B24'}</Text> zużyte ręczniki</Text>
@@ -62,15 +62,16 @@ const styles = StyleSheet.create({
         margin: 5,
         marginTop: 10,
         padding: 15,
-        backgroundColor: "blue",
+        borderColor: "blue",
+        borderWidth: 10,
         color: 'white',
     },
     dot: {
-        color: 'white',
+        color: 'black',
         fontSize: 15
     },
     main: {
-        color: 'white',
+        color: 'black',
         fontSize: 19
     },
     glass: {
@@ -78,7 +79,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         margin: 5,
         padding: 15,
-        backgroundColor: "green",
+        borderColor: "green",
+        borderWidth: 10,
         color: 'white'
     },
     bio: {
@@ -86,7 +88,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         margin: 5,
         padding: 15,
-        backgroundColor: "brown",
+        borderColor: "brown",
+        borderWidth: 10,
         color: 'white'
     },
     metals: {
@@ -94,7 +97,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         margin: 5,
         padding: 15,
-        backgroundColor: "orange",
+        borderColor: "yellow",
+        borderWidth: 10,
         color: 'white'
     },
     mixed: {
@@ -102,12 +106,43 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         margin: 5,
         padding: 15,
-        backgroundColor: "grey",
-        color: 'white'
+        borderColor: "grey",
+        borderWidth: 10,
+        color: 'black'
     },
     header: {
         fontSize: 40,
-        color: 'white',
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: "blue",
+        textAlign: 'center'
+    },
+    header2: {
+        fontSize: 40,
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: "green",
+        textAlign: 'center'
+    },
+    header3: {
+        fontSize: 40,
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: "brown",
+        textAlign: 'center'
+    },
+    header4: {
+        fontSize: 40,
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: "yellow",
+        textAlign: 'center'
+    },
+    header5: {
+        fontSize: 40,
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: "grey",
         textAlign: 'center'
     },
 });
