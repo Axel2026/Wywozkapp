@@ -21,89 +21,31 @@ const Contact = () => {
             flex: 1,
             backgroundColor: colors.backgroundColor,
         }}>
-            <View style={{
-                borderRadius: 20,
-                marginBottom: 10,
-                margin: 5,
-                marginTop: 10,
-                padding: 15,
-                backgroundColor: "blue",
-                color: 'white',
-            }}><Text style={{
-                fontSize: 40,
-                color: 'white',
-                textAlign: 'center'
-            }}>MPGK Tarnów</Text>
+            <View style={styles.main}>
                 <Text style={{
-                    color: 'white',
-                    fontSize: 19
+                    fontSize: 40,
                 }} onPress={() => {
-                    dialCall(123456789)
-                }}>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: 15
-                    }}>{'\n'}{'\u2B24'}
-                    </Text>123456789</Text>
+                    dialCall(123456789)}}>MPGK Tarnów    {'\u2192'}</Text>
             </View>
         </View>
     );
 };
 const styles = StyleSheet.create({
-    paper: {
-        borderRadius: 20,
-        marginBottom: 10,
-        margin: 5,
-        marginTop: 10,
-        padding: 15,
-        backgroundColor: "blue",
-        color: 'white',
-    },
     dot: {
         color: 'white',
         fontSize: 15
     },
     main: {
-        color: 'white',
+        borderRadius: 20,
+        marginBottom: 10,
+        margin: 5,
+        marginTop: 10,
+        padding: 15,
+        color: 'black',
+        borderWidth: 6,
+        borderColor: "#85BB76",
         fontSize: 19
-    },
-    glass: {
-        borderRadius: 20,
-        marginBottom: 10,
-        margin: 5,
-        padding: 15,
-        backgroundColor: "green",
-        color: 'white'
-    },
-    bio: {
-        borderRadius: 20,
-        marginBottom: 10,
-        margin: 5,
-        padding: 15,
-        backgroundColor: "brown",
-        color: 'white'
-    },
-    metals: {
-        borderRadius: 20,
-        marginBottom: 10,
-        margin: 5,
-        padding: 15,
-        backgroundColor: "orange",
-        color: 'white'
-    },
-    mixed: {
-        borderRadius: 20,
-        marginBottom: 10,
-        margin: 5,
-        padding: 15,
-        backgroundColor: "grey",
-        color: 'white'
-    },
-    header: {
-        fontSize: 40,
-        color: 'white',
-        textAlign: 'center'
-    },
+    }
 });
 export default Contact;
 

@@ -17,6 +17,44 @@ const MainPage = ({navigation}) => {
     const [street, setStreet] = useState();
     const [houseNumber, setHouseNumber] = useState();
     const {colors} = useTheme();
+    const json_data = [
+        {
+            'location': 'Tuchów',
+            'scheduleDate': '10.02.2022',
+            'garbageCollections': [
+                {
+                    'date': '12.02.2022',
+                    'type': 'paper',
+                    'month': 'LUT',
+                    'name': 'papier i tektura'
+                },
+                {
+                    'date': '12.02.2022',
+                    'type': 'glass',
+                    'month': 'LUT',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '16.02.2022',
+                    'type': 'bio',
+                    'month': 'LUT',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '21.02.2022',
+                    'type': 'mixed',
+                    'month': 'LUT',
+                    'name': 'mieszane'
+                },
+                {
+                    'date': '21.02.2022',
+                    'type': 'metals',
+                    'month': 'LUT',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+            ]
+        }
+    ]
 
     function setDateLocationComponent() {
         const date = new Date();
@@ -24,7 +62,6 @@ const MainPage = ({navigation}) => {
         const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
         return day + "." + month + "." + date.getFullYear();
     }
-
     const _retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
@@ -41,12 +78,31 @@ const MainPage = ({navigation}) => {
             // Error retrieving data
         }
     };
+    const nextGarbageDate = () => {
+        const weekday = ["Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota"];
+        //console.log('log ' + JSON.stringify(json_data[0].garbageCollections[0]))
+        const found = json_data[0].garbageCollections.find(element => element.date >= setDateLocationComponent());
+        const nextGarbageDate = found.date
+        const d = new Date(nextGarbageDate.replace('.','-').replace('.','-').split('-').reverse().join('-'));
+        let day = weekday[d.getDay()];
+
+        //console.log(day)
+        return day + ', ' + nextGarbageDate
+    }
+    const nextGarbageType = () => {
+        const nextGarbageDateOnly =  nextGarbageDate().substr(-10)
+        const found = json_data[0].garbageCollections.find(element => element.date == nextGarbageDateOnly);
+        const number = json_data[0].garbageCollections.filter(x => x.date==nextGarbageDateOnly).length;
+        let moreInfo = ''
+        if(number>1){
+            moreInfo = ' i ' + number + ' inne'
+        }
+        //console.log(found.name, number)
+        return 'Śmieci ' + found.name+moreInfo
+    }
 
     useEffect(() => {
-
         _retrieveData()
-
-
     }, [])
 
     return (
@@ -118,12 +174,12 @@ const MainPage = ({navigation}) => {
                     color: colors.textAndIconColor,
                     fontFamily: 'Poppins-Medium',
                     textAlign: 'center'
-                }}>Sroda, 20.11.2020</Text>
+                }}>{nextGarbageDate()}</Text>
                 <Text style={{
                     color: colors.textAndIconColor,
                     fontFamily: 'Poppins-Medium',
                     textAlign: 'center'
-                }}>Smieci mieszane</Text></TouchableOpacity>
+                }}>{nextGarbageType()}</Text></TouchableOpacity>
             <TouchableOpacity style={{
                 backgroundColor: colors.blockColor,
                 display: "flex",
@@ -168,7 +224,7 @@ const MainPage = ({navigation}) => {
                 flex: 0,
                 marginTop: '5%'
             }} onPress={() => {
-                navigation.navigate('GarbageSchedule')
+                navigation.navigate('GarbageSchedule',{json_data:json_data})
             }}><MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="timetable"/>
                 <Text style={{
                     textAlign: 'center',
