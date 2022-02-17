@@ -52,6 +52,18 @@ const MainPage = ({navigation}) => {
                     'month': 'LUT',
                     'name': 'metale i tworzywa sztuczne'
                 },
+                {
+                    'date': '03.03.2022',
+                    'type': 'bio',
+                    'month': 'MAR',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '07.11.2022',
+                    'type': 'metals',
+                    'month': 'LIS',
+                    'name': 'metale i tworzywa sztuczne'
+                },
             ]
         }
     ]
@@ -92,9 +104,9 @@ const MainPage = ({navigation}) => {
     const nextGarbageType = () => {
         const nextGarbageDateOnly =  nextGarbageDate().substr(-10)
         const found = json_data[0].garbageCollections.find(element => element.date == nextGarbageDateOnly);
-        const number = json_data[0].garbageCollections.filter(x => x.date==nextGarbageDateOnly).length;
+        const number = json_data[0].garbageCollections.filter(x => x.date==nextGarbageDateOnly).length-1;
         let moreInfo = ''
-        if(number>1){
+        if(number>0){
             moreInfo = ' i ' + number + ' inne'
         }
         //console.log(found.name, number)

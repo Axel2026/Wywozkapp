@@ -44,6 +44,31 @@ const GarbageCollection = ({route}) => {
         <Item data={item}/>
     );
 
+    const scheduleRange = (range) => {
+        const date = new Date();
+        const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+
+        console.log(range)
+
+        if(range=='thismonth'){
+            return json_data[0].garbageCollections.filter(element => element.date.substr(3,2) == month)
+        }
+        else if(range == 'nextmonth'){
+            const nextMonth = date.getMonth() + 2 < 10 ? "0" + (date.getMonth() + 2) : (date.getMonth() + 2);
+            return json_data[0].garbageCollections.filter(element => element.date.substr(3,2) == nextMonth)
+        }
+        else if(range == '3nextmonths'){
+            const nextMonth = date.getMonth() + 2 < 10 ? "0" + (date.getMonth() + 2) : (date.getMonth() + 2);
+            const nextNextMonth = date.getMonth() + 3 < 10 ? "0" + (date.getMonth() + 3) : (date.getMonth() + 3);
+            return json_data[0].garbageCollections.filter(element => element.date.substr(3,2) == month || element.date.substr(3,2) == nextMonth || element.date.substr(3,2) == nextNextMonth)
+        }
+        else if(range == 'thisyear'){
+            return json_data[0].garbageCollections.filter(element => element.date.substr(6,5) == date.getFullYear() )
+
+        }
+    };
+
 
     return (
         <View style={{
@@ -65,8 +90,13 @@ const GarbageCollection = ({route}) => {
                     fontSize: 21,
                     textAlign: 'center',
                     fontFamily: 'Poppins-Medium',
-                }}>Najbliższy wywóz w twojej lokalizacji
-                </Text>
+                }}>Najbliższy wywóz w twojej lokalizacji</Text>
+                <Text style={{
+                    color: colors.textAndIconColor,
+                    fontSize: 16,
+                    textAlign: 'center',
+                    fontFamily: 'Poppins-Medium',
+                }}>Ostatnia aktualizacja: {json_data[0].scheduleDate}</Text>
 
             </View>
 
@@ -88,12 +118,13 @@ const GarbageCollection = ({route}) => {
                     }>
                     <Picker.Item label="Bieżący miesiąc" value="thismonth" />
                     <Picker.Item label="Następny miesiąc" value="nextmonth" />
-                    <Picker.Item label="3 Następne miesiące" value="3nextmonths" />
+                    <Picker.Item label="3 Najbliższe miesiące" value="3nextmonths" />
                     <Picker.Item label="Bieżący rok" value="thisyear" />
                 </Picker>
 
                 <AnimatedFlatList
-                    data={json_data[0].garbageCollections}
+                   /* data={json_data[0].garbageCollections}*/
+                    data={scheduleRange(selectedDateRange)}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     animationType={AnimationType.Fade}
