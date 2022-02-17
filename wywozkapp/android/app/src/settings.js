@@ -1,29 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import SettingsList from 'react-native-settings-list';
-import {Text, View, StyleSheet, Modal, Pressable, TextInput, ScrollView} from "react-native";
+import {Text, View, StyleSheet, Modal, Pressable, TextInput, ScrollView, ActivityIndicator} from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {useTheme} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux'
+import GetLocation from "react-native-get-location";
 
 const Settings = () => {
-
-    const {colors} = useTheme();
-    const dispatch = useDispatch()
-    const currentTheme = useSelector(state => {
-        return state.myDarkMode
-    })
 
     const [automaticLocation, setAutomaticLocation] = useState(false);
     const [darkTheme, setDarkTheme] = useState(false);
     const [city, setCity] = useState();
     const [street, setStreet] = useState();
     const [houseNumber, setHouseNumber] = useState();
-    const [selectedReminderTime, setSelectedReminderTime] = useState('1day');
+    const [onChangeCity, setOnChangeCity] = useState(city);
+    const [onChangeStreet, setOnChangeStreet] = useState(street);
+    const [onChangeHouseNumber, setOnChangeHouseNumber] = useState(houseNumber);
+    const [selectedReminderTime, setSelectedReminderTime] = useState();
     const [inputModalVisible, setInputModalVisible] = useState(false);
     const [pickerModalVisible, setPickerModalVisible] = useState(false);
+    const [locationModalVisible, setLocationModalVisible] = useState(false);
     const [modalData, setModalData] = useState([])
+    const [isLocationLoading, setIsLocationLoading] = useState(false)
+
+    const {colors} = useTheme();
+    const dispatch = useDispatch()
+    const currentTheme = useSelector(state => {
+        return state.myDarkMode
+    })
 
     const reminderTimes = {
         "1 dzień przed": "1day",
@@ -32,8 +38,24 @@ const Settings = () => {
         "Tydzień przed": "1week"
     };
 
+    useEffect(() => {
+        getAddress()
+        getAutomaticLocationSetting()
+    }, [])
+
+    useEffect(() => {
+        if (isLocationLoading) {
+            setIsLocationLoading(false)
+        }
+    }, [city, street, houseNumber])
+
     function onAutomaticLocationSwitch() {
-        setAutomaticLocation(!automaticLocation)
+        setAutomaticLocation(!automaticLocation);
+        saveAutomaticLocationSetting()
+        if (!automaticLocation) {
+            setLocationModalVisible(!locationModalVisible);
+            getLocation()
+        }
     }
 
     function onDarkThemeSwitch() {
@@ -41,37 +63,71 @@ const Settings = () => {
         dispatch({type: "change_theme", payload: !currentTheme})
     }
 
-    useEffect(() => {
-        getAddress()
-    }, [])
+    async function getAddressFromCoordinates(latitude, longitude) {
+        return new Promise((resolve) => {
+            const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=jBSGY_EW33IDBGXABqOoOjx2sT5weNRI6WybF0d9aU0&mode=retrieveAddresses&prox=${latitude},${longitude}`
+            fetch(url).then(res => res.json())
+                .then(resJson => {
+                    if (resJson
+                        && resJson.Response
+                        && resJson.Response.View
+                        && resJson.Response.View[0]
+                        && resJson.Response.View[0].Result
+                        && resJson.Response.View[0].Result[0]) {
+                        resolve(resJson.Response.View[0].Result[0].Location.Address.Label)
+                        setCity(resJson.Response.View[0].Result[0].Location.Address.District)
+                        setOnChangeCity(resJson.Response.View[0].Result[0].Location.Address.District)
+                        setStreet(resJson.Response.View[0].Result[0].Location.Address.Street.replace("ulica", ""))
+                        setOnChangeStreet(resJson.Response.View[0].Result[0].Location.Address.Street.replace("ulica", ""))
+                        setHouseNumber(resJson.Response.View[0].Result[0].Location.Address.HouseNumber)
+                        setOnChangeHouseNumber(resJson.Response.View[0].Result[0].Location.Address.HouseNumber)
+                        if (city === resJson.Response.View[0].Result[0].Location.Address.District && onChangeCity === resJson.Response.View[0].Result[0].Location.Address.District &&
+                            street === resJson.Response.View[0].Result[0].Location.Address.Street.replace("ulica", "") && onChangeStreet === resJson.Response.View[0].Result[0].Location.Address.Street.replace("ulica", "") &&
+                            houseNumber === resJson.Response.View[0].Result[0].Location.Address.HouseNumber && onChangeHouseNumber === resJson.Response.View[0].Result[0].Location.Address.HouseNumber) {
+                            setIsLocationLoading(false)
+                        }
+                    } else {
+                        resolve();
+                    }
+                })
+                .catch((e) => {
+                    console.warn('Error in getAddressFromCoordinates: ', e)
+                    resolve()
+                })
+        })
+    }
 
-
-    /*    async function removeData() {
-            try {
-                await AsyncStorage.removeItem('STORAGE_USER_SETTINGS');
-                console.log("Usunięto!")
-            } catch (error) {
-                console.log(error)
-            }
-        };*/
-
+    async function getLocation() {
+        setIsLocationLoading(true)
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        }).then(location => {
+            getAddressFromCoordinates(location.latitude, location.longitude)
+        }).catch(error => {
+            console.warn(error);
+        })
+    }
 
     async function getAddress() {
         try {
             const settings = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
-            if (settings !== null) {
+            if (settings !== null && JSON.parse(settings).city !== undefined &&
+                JSON.parse(settings).street !== undefined && JSON.parse(settings).houseNumber !== undefined) {
                 setCity(JSON.parse(settings).city)
+                setOnChangeCity(JSON.parse(settings).city)
                 setStreet(JSON.parse(settings).street)
+                setOnChangeStreet(JSON.parse(settings).street)
                 setHouseNumber(JSON.parse(settings).houseNumber)
+                setOnChangeHouseNumber(JSON.parse(settings).houseNumber)
                 setSelectedReminderTime(JSON.parse(settings).selectedReminderTime)
-                console.log(JSON.parse(settings));
             }
         } catch (error) {
-            console.log(error)
+            console.warn(error)
         }
     }
 
-    const saveSettings = async (notificationTime) => {
+    async function saveSettings(notificationTime, city, street, houseNumber) {
         try {
             const payload = {
                 city: city,
@@ -81,18 +137,45 @@ const Settings = () => {
             }
             await AsyncStorage.setItem('STORAGE_USER_SETTINGS', JSON.stringify(payload))
         } catch (error) {
-            console.log(error)
+            console.warn(error)
         }
-    };
+    }
+
+    async function getAutomaticLocationSetting() {
+        try {
+            const automaticLocationSetting = await AsyncStorage.getItem('AUTOMATIC_LOCATION');
+            if (automaticLocationSetting !== null) {
+                setAutomaticLocation(JSON.parse(automaticLocationSetting));
+            }
+        } catch (error) {
+            console.warn(error)
+        }
+    }
+
+    async function saveAutomaticLocationSetting() {
+        try {
+            await AsyncStorage.setItem('AUTOMATIC_LOCATION', JSON.stringify(!automaticLocation))
+        } catch (error) {
+            console.warn(error)
+        }
+    }
+
+    async function saveAutomaticLocationAddress() {
+        setLocationModalVisible(!locationModalVisible);
+        setCity(onChangeCity);
+        setStreet(onChangeStreet);
+        setHouseNumber(onChangeHouseNumber);
+        saveSettings(selectedReminderTime, onChangeCity, onChangeStreet, onChangeHouseNumber)
+    }
 
     function getKeyByValue(object, value) {
         return Object.keys(object).find(key => object[key] === value);
-    };
+    }
 
     function onPickerModalPress(time) {
         setSelectedReminderTime(reminderTimes[time]);
         setPickerModalVisible(!pickerModalVisible);
-        saveSettings(reminderTimes[time])
+        saveSettings(reminderTimes[time], city, street, houseNumber)
     }
 
     return (
@@ -227,7 +310,7 @@ const Settings = () => {
                             style={[styles.button, {backgroundColor: colors.blockColor}]}
                             onPress={() => {
                                 setInputModalVisible(!inputModalVisible);
-                                saveSettings(selectedReminderTime)
+                                saveSettings(selectedReminderTime, city, street, houseNumber)
                             }}>
                             <Text style={styles.textStyle}>Zapisz</Text>
                         </Pressable>
@@ -241,8 +324,8 @@ const Settings = () => {
                 <Pressable onPress={() => setPickerModalVisible(!pickerModalVisible)} style={styles.centeredView}>
                     <View style={[styles.modalView, {backgroundColor: colors.modalSettings}]}>
                         <ScrollView>
-                            {Object.keys(reminderTimes).map((time) => (
-                                <View style={styles.picker_modal_item_container}>
+                            {Object.keys(reminderTimes).map((time, index) => (
+                                <View style={styles.picker_modal_item_container} key={time + index}>
                                     <Pressable onPress={() => onPickerModalPress(time)}
                                                style={styles.picker_modal_item}><Text
                                         style={[styles.picker_modal_item_text, {color: colors.textAndIconColor}]}>{time}</Text></Pressable>
@@ -252,12 +335,53 @@ const Settings = () => {
                     </View>
                 </Pressable>
             </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={locationModalVisible}>
+                <Pressable onPress={() => setLocationModalVisible(!locationModalVisible)} style={styles.centeredView}>
+                    {(isLocationLoading) &&
+                    <ActivityIndicator size="large" color={colors.blockColor} style={{height: 40}}/>}
+                    {!isLocationLoading && (<View style={[styles.modalView, {backgroundColor: colors.modalSettings}]}>
+                        <Text style={[styles.modalText, {color: colors.textAndIconColor, marginBottom: 25}]}>Pobrane
+                            dane</Text>
+                        <TextInput style={[styles.input_location, {color: colors.textAndIconColor}]}
+                                   placeholder={city}
+                                   placeholderTextColor={colors.textAndIconColor}
+                                   onChangeText={newText => setOnChangeCity(newText)}/>
+                        <TextInput style={[styles.input_location, {color: colors.textAndIconColor}]}
+                                   placeholder={street}
+                                   placeholderTextColor={colors.textAndIconColor}
+                                   onChangeText={newText => setOnChangeStreet(newText)}/>
+                        <TextInput style={[styles.input_location, {color: colors.textAndIconColor}]}
+                                   placeholder={houseNumber}
+                                   placeholderTextColor={colors.textAndIconColor}
+                                   onChangeText={newText => setOnChangeHouseNumber(newText)}/>
+                        <Pressable
+                            style={[styles.button, {backgroundColor: colors.blockColor}]}
+                            onPress={() => {
+                                saveAutomaticLocationAddress()
+                            }}>
+                            <Text style={styles.textStyle}>Zapisz</Text>
+                        </Pressable>
+                    </View>)}
+                </Pressable>
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    picker_modal_item: {},
+    input_location: {
+        fontFamily: 'Poppins-regular',
+        fontSize: 16,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: "grey",
+        width: '100%',
+        paddingLeft: 10,
+        marginBottom: 15,
+    },
     picker_modal_item_text: {
         color: 'black',
         fontSize: 20,
