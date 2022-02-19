@@ -1,6 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import SettingsList from 'react-native-settings-list';
-import {Text, View, StyleSheet, Modal, Pressable, TextInput, ScrollView, ActivityIndicator} from "react-native";
+import {
+    Text,
+    View,
+    StyleSheet,
+    Modal,
+    Pressable,
+    TextInput,
+    ScrollView,
+    ActivityIndicator,
+    TouchableOpacity
+} from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,8 +29,8 @@ const Settings = () => {
     const [onChangeStreet, setOnChangeStreet] = useState(street);
     const [onChangeHouseNumber, setOnChangeHouseNumber] = useState(houseNumber);
     const [selectedReminderTime, setSelectedReminderTime] = useState();
-    const [pickerModalVisible, setPickerModalVisible] = useState(false);
     const [inputModalVisible, setInputModalVisible] = useState(false);
+    const [pickerModalVisible, setPickerModalVisible] = useState(false);
     const [locationModalVisible, setLocationModalVisible] = useState(false);
     const [modalData, setModalData] = useState([])
     const [isLocationLoading, setIsLocationLoading] = useState(false)
@@ -59,6 +69,7 @@ const Settings = () => {
     }
 
     function onDarkThemeSwitch() {
+        AsyncStorage.setItem('SELECTED_THEME', JSON.stringify(!currentTheme))
         setDarkTheme(!darkTheme)
         dispatch({type: "change_theme", payload: !currentTheme})
     }

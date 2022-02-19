@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainPage from "./android/app/src/mainPage";
 import {NavigationContainer, DarkTheme, DefaultTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -8,6 +8,7 @@ import newUserSettingsModal from "./android/app/src/newUserSettingsModal";
 import {Provider, useSelector} from 'react-redux'
 import {createStore, combineReducers} from "redux";
 import {themeReducer} from "./android/app/src/themeReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
@@ -43,7 +44,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer)
 
-export default function App(){
+export default function App() {
     return (
         <Provider store={store}>
             <Navigation/>
@@ -53,13 +54,23 @@ export default function App(){
 
 export function Navigation() {
 
+    let parsed;
+
     useEffect(() => {
         SplashScreen.hide();
+        getKeyValue()
     }, [])
 
     let currentTheme = useSelector(state => {
         return state.myDarkMode
     })
+
+    async function getKeyValue() {
+        const settings = AsyncStorage.getItem('SELECTED_THEME');
+        parsed = (JSON.parse(await settings))
+        console.log('parsed ' + parsed)
+        // return parsed
+    }
 
     return (
         <NavigationContainer theme={currentTheme ? customDarkTheme : customDefaultTheme}>
