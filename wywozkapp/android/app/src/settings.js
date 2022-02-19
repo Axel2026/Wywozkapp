@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {useTheme} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux'
+import GetLocation from "react-native-get-location";
 
 const Settings = () => {
 
@@ -19,6 +20,7 @@ const Settings = () => {
     const [onChangeHouseNumber, setOnChangeHouseNumber] = useState(houseNumber);
     const [selectedReminderTime, setSelectedReminderTime] = useState();
     const [pickerModalVisible, setPickerModalVisible] = useState(false);
+    const [inputModalVisible, setInputModalVisible] = useState(false);
     const [locationModalVisible, setLocationModalVisible] = useState(false);
     const [modalData, setModalData] = useState([])
     const [isLocationLoading, setIsLocationLoading] = useState(false)
