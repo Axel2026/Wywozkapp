@@ -19,8 +19,8 @@ const Settings = () => {
     const [onChangeStreet, setOnChangeStreet] = useState(street);
     const [onChangeHouseNumber, setOnChangeHouseNumber] = useState(houseNumber);
     const [selectedReminderTime, setSelectedReminderTime] = useState();
-    const [inputModalVisible, setInputModalVisible] = useState(false);
     const [pickerModalVisible, setPickerModalVisible] = useState(false);
+    const [inputModalVisible, setInputModalVisible] = useState(false);
     const [locationModalVisible, setLocationModalVisible] = useState(false);
     const [modalData, setModalData] = useState([])
     const [isLocationLoading, setIsLocationLoading] = useState(false)
