@@ -10,7 +10,7 @@ import {AsyncStorage} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 
 
-const MainPage = ({navigation}) => {
+const MainPage = ({navigation,route}) => {
 
 
     const [city, setCity] = useState();
@@ -112,10 +112,11 @@ const MainPage = ({navigation}) => {
         //console.log(found.name, number)
         return 'Śmieci ' + found.name+moreInfo
     }
-
     useEffect(() => {
+        console.log('useEffect-----------')
         _retrieveData()
-    }, [])
+    }, [route])
+
 
     return (
         <View style={{

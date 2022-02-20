@@ -5,6 +5,7 @@ import {FlatList} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {AnimatedFlatList, AnimationType} from 'flatlist-intro-animations';
 import {Picker} from "@react-native-community/picker";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
 const GarbageCollection = ({route}) => {
@@ -21,8 +22,57 @@ const GarbageCollection = ({route}) => {
 
     const {colors} = useTheme()
 
-    const json_data = route.params.json_data
-
+    /*const json_data = route.params.json_data*/
+    const json_data = [
+        {
+            'location': 'Tuchów',
+            'scheduleDate': '10.02.2022',
+            'garbageCollections': [
+                {
+                    'date': '12.02.2022',
+                    'type': 'paper',
+                    'month': 'LUT',
+                    'name': 'papier i tektura'
+                },
+                {
+                    'date': '12.02.2022',
+                    'type': 'glass',
+                    'month': 'LUT',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '16.02.2022',
+                    'type': 'bio',
+                    'month': 'LUT',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '21.02.2022',
+                    'type': 'mixed',
+                    'month': 'LUT',
+                    'name': 'mieszane'
+                },
+                {
+                    'date': '21.02.2022',
+                    'type': 'metals',
+                    'month': 'LUT',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '03.03.2022',
+                    'type': 'bio',
+                    'month': 'MAR',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '07.11.2022',
+                    'type': 'metals',
+                    'month': 'LIS',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+            ]
+        }
+    ]
 
     const garbageColorStyles = (type) => {
         return {
@@ -33,16 +83,23 @@ const GarbageCollection = ({route}) => {
     const Item = ({data}) => (
         <View style={[styles.item, garbageColorStyles(data.type)]}>
             <View style={styles.date_box}><Text
-                style={styles.date_box_text}>{data.date.substr(0, 2)} {data.month}</Text></View>
-            <View style={styles.name_box}><Text style={styles.name_box_text}>{data.name}</Text></View>
-            <View style={styles.trash_box}><AntDesign style={styles.shadow} color={garbage_colors[data.type]} size={42}
-                                                      name="delete"/></View>
+                 style={styles.date_box_text}>{data.date.substr(0, 2)}{'\n'}{data.month}</Text></View>
+            <View style={styles.name_box}><Text numberOfLines={1} style={styles.name_box_text}>{data.name}</Text><Text style={styles.smallname_box_text}>{calculate(data.date)}</Text></View>
+            <View style={styles.trash_box}><MaterialCommunityIcons style={styles.shadow} color={garbage_colors[data.type]} size={52}
+                                                      name="trash-can-outline"/></View>
         </View>
     );
 
     const renderItem = ({item}) => (
         <Item data={item}/>
     );
+
+    function setDateLocationComponent() {
+        const date = new Date();
+        const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        return day + "." + month + "." + date.getFullYear();
+    }
 
     const scheduleRange = (range) => {
         const date = new Date();
@@ -69,6 +126,32 @@ const GarbageCollection = ({route}) => {
         }
     };
 
+    const calculate = (date) => {
+        const podana = new Date(date.replace('.','-').replace('.','-').split('-').reverse().join('-'));
+        const dziś = new Date(setDateLocationComponent().replace('.','-').replace('.','-').split('-').reverse().join('-'));
+        const diffDays = Math.ceil((podana-dziś) / (1000 * 60 * 60 * 24));
+
+        //console.log('podana' + podana)
+        //console.log('dzis' + dziś)
+        //console.log('różnica ' + diffDays)
+
+        if(diffDays<0){
+            return 'Termin minął'
+        }
+        else if(diffDays == 0){
+            return 'Odbiór dzisiaj'
+        }
+        else if(diffDays == 1){
+            return 'Za 1 dzień'
+        }
+        else if(diffDays > 1 && diffDays < 14){
+            return 'Za ' + diffDays + ' dni'
+        }
+        else if(diffDays>=14){
+            return 'Za ' + Math.round(diffDays/7) + ' tyg.'
+        }
+    }
+
 
     return (
         <View style={{
@@ -83,7 +166,9 @@ const GarbageCollection = ({route}) => {
                 alignContent: 'center',
                 justifyContent: 'center',
                 padding: 15,
-                width: '100%'
+                width: '100%',
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
             }}>
                 <Text style={{
                     color: colors.textAndIconColor,
@@ -110,7 +195,7 @@ const GarbageCollection = ({route}) => {
                 }}>Zakres harmonogramu
                 </Text>
                 <Picker
-                    style={{ backgroundColor: '#d5d5d5',marginBottom:20}}
+                    style={{ backgroundColor: '#d5d5d5',marginBottom:20,}}
                     mode="dropdown"
                     selectedValue={selectedDateRange}
                     onValueChange={(itemValue, itemIndex) =>
@@ -121,14 +206,15 @@ const GarbageCollection = ({route}) => {
                     <Picker.Item label="3 Najbliższe miesiące" value="3nextmonths" />
                     <Picker.Item label="Bieżący rok" value="thisyear" />
                 </Picker>
-
-                <AnimatedFlatList
+                <FlatList
                    /* data={json_data[0].garbageCollections}*/
                     data={scheduleRange(selectedDateRange)}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     animationType={AnimationType.Fade}
                     animationDuration={800}
+                    showsVerticalScrollIndicator ={false}
+                    showsHorizontalScrollIndicator={false}
                 />
             </View>
         </View>
@@ -146,7 +232,9 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         padding: 5,
-        width: '100%'
+        width: '100%',
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
     },
     header_text: {
         color: 'black',
@@ -155,9 +243,10 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
     },
     flatlist: {
-        /*backgroundColor: "#ffffff",*/
+        /*backgroundColor: "#942020",*/
         width: '97%',
         marginTop: 5,
+        flex:1
     },
     item: {
         backgroundColor: "#d5d5d5",
@@ -168,8 +257,11 @@ const styles = StyleSheet.create({
 
         borderColor: "#e2dd39",
         display: 'flex',
-        flexDirection: 'row'
-
+        flexDirection: 'row',
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
     },
     date_box: {
         backgroundColor: "#d5d5d5",
@@ -191,10 +283,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         paddingLeft: 10,
+
     },
     name_box_text: {
         color: 'black',
         fontSize: 18,
+        textAlign: 'left',
+        fontFamily: 'Poppins-Regular',
+    },
+    smallname_box_text: {
+        color: 'black',
+        fontSize: 14,
         textAlign: 'left',
         fontFamily: 'Poppins-Regular',
     },
@@ -204,6 +303,8 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
     },
     shadow: {
         shadowColor: "#000",
