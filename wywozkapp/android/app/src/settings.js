@@ -49,6 +49,7 @@ const Settings = () => {
     };
 
     useEffect(() => {
+        getTheme()
         getAddress()
         getAutomaticLocationSetting()
     }, [])
@@ -75,16 +76,19 @@ const Settings = () => {
     }
 
     async function getAddressFromCoordinates(latitude, longitude) {
+        console.log(latitude + " " + longitude)
         return new Promise((resolve) => {
             const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=jBSGY_EW33IDBGXABqOoOjx2sT5weNRI6WybF0d9aU0&mode=retrieveAddresses&prox=${latitude},${longitude}`
             fetch(url).then(res => res.json())
                 .then(resJson => {
+                    console.log("resJson: " + JSON.stringify(resJson));
                     if (resJson
                         && resJson.Response
                         && resJson.Response.View
                         && resJson.Response.View[0]
                         && resJson.Response.View[0].Result
                         && resJson.Response.View[0].Result[0]) {
+                        console.log("Test1")
                         resolve(resJson.Response.View[0].Result[0].Location.Address.Label)
                         setCity(resJson.Response.View[0].Result[0].Location.Address.District)
                         setOnChangeCity(resJson.Response.View[0].Result[0].Location.Address.District)
@@ -118,6 +122,17 @@ const Settings = () => {
         }).catch(error => {
             console.warn(error);
         })
+    }
+
+    async function getTheme() {
+        try {
+            const theme = await AsyncStorage.getItem('SELECTED_THEME');
+            if(JSON.parse(theme) !== null){
+                setDarkTheme(JSON.parse(theme))
+            }
+        } catch (error) {
+            console.warn(error)
+        }
     }
 
     async function getAddress() {
