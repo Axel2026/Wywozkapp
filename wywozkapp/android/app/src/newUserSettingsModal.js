@@ -24,7 +24,7 @@ const NewUserSettingsModal = ({navigation}) => {
         }
         //alert('Payload = ' + JSON.stringify(payload))
         AsyncStorage.setItem('STORAGE_USER_SETTINGS', JSON.stringify(payload))
-        navigation.navigate("Home")
+        navigation.navigate("Home",{'paramPropKey': 'paramPropValue'});
     }
     function getAddressFromCoordinates({ latitude, longitude }) {
         return new Promise((resolve) => {
