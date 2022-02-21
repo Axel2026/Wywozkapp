@@ -8,7 +8,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {useTheme} from '@react-navigation/native';
 
 
-const Location = ({navigation}) => {
+const Location = ({navigation, route}) => {
 
     const {colors} = useTheme()
 
@@ -86,7 +86,7 @@ const Location = ({navigation}) => {
 
     useEffect(() => {
         locationData();
-    }, [])
+    }, [route])
 
     const wait = (timeout) => {
         return new Promise(resolve => setTimeout(resolve, timeout));
