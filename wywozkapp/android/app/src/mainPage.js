@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet, Platform} from 'react-native';
 import GetLocation from 'react-native-get-location'
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -8,9 +8,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import {AsyncStorage} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import PushNotification from "react-native-push-notification";
 
-
-const MainPage = ({navigation,route}) => {
+const MainPage = ({navigation, route}) => {
 
 
     const [city, setCity] = useState();
@@ -74,6 +74,7 @@ const MainPage = ({navigation,route}) => {
         const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
         return day + "." + month + "." + date.getFullYear();
     }
+
     const _retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
@@ -91,32 +92,95 @@ const MainPage = ({navigation,route}) => {
         }
     };
     const nextGarbageDate = () => {
-        const weekday = ["Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota"];
+        const weekday = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
         //console.log('log ' + JSON.stringify(json_data[0].garbageCollections[0]))
         const found = json_data[0].garbageCollections.find(element => element.date >= setDateLocationComponent());
         const nextGarbageDate = found.date
-        const d = new Date(nextGarbageDate.replace('.','-').replace('.','-').split('-').reverse().join('-'));
+        const d = new Date(nextGarbageDate.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
         let day = weekday[d.getDay()];
 
         //console.log(day)
         return day + ', ' + nextGarbageDate
     }
     const nextGarbageType = () => {
-        const nextGarbageDateOnly =  nextGarbageDate().substr(-10)
+        const nextGarbageDateOnly = nextGarbageDate().substr(-10)
         const found = json_data[0].garbageCollections.find(element => element.date == nextGarbageDateOnly);
-        const number = json_data[0].garbageCollections.filter(x => x.date==nextGarbageDateOnly).length-1;
+        const number = json_data[0].garbageCollections.filter(x => x.date == nextGarbageDateOnly).length - 1;
         let moreInfo = ''
-        if(number>0){
+        if (number > 0) {
             moreInfo = ' i ' + number + ' inne'
         }
         //console.log(found.name, number)
-        return 'Śmieci ' + found.name+moreInfo
+        return 'Śmieci ' + found.name + moreInfo
     }
     useEffect(() => {
         console.log('useEffect-----------')
         _retrieveData()
+        testPush()
     }, [route])
 
+
+    PushNotification.configure({
+        onRegister: function (token) {
+            console.log("TOKEN:", token);
+        },
+        onNotification: function (notification) {
+            console.log("NOTIFICATION:", notification);
+            // notification.finish(PushNotificationIOS.FetchResult.NoData);
+        },
+
+        onAction: function (notification) {
+            console.log("ACTION:", notification.action);
+            console.log("NOTIFICATION:", notification);
+
+            // process the action
+        },
+
+        // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
+        onRegistrationError: function (err) {
+            console.error(err.message, err);
+        },
+
+        // IOS ONLY (optional): default: all - Permissions to register.
+        permissions: {
+            alert: true,
+            badge: true,
+            sound: true,
+        },
+
+        // Should the initial notification be popped automatically
+        // default: true
+        popInitialNotification: true,
+
+        /**
+         * (optional) default: true
+         * - Specified if permissions (ios) and token (android and ios) will requested or not,
+         * - if not, you must call PushNotificationsHandler.requestPermissions() later
+         * - if you are not using remote notification or do not have Firebase installed, use this:
+         *     requestPermissions: Platform.OS === 'ios'
+         */
+        requestPermissions: Platform.OS === 'ios',
+    });
+
+    const testPush = () => {
+        PushNotification.localNotification({
+            channelId: "channel-id",
+            title: "My Notification Title", // (optional)
+            message: "My Notification Message", // (required)
+        });
+    }
+
+    // PushNotification.createChannel(
+    //     {
+    //         channelId: 'channel-id', // (required)
+    //         channelName: 'My channel', // (required)
+    //         channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+    //         playSound: false, // (optional) default: true
+    //         soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+    //         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+    //     },
+    //     (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    // );
 
     return (
         <View style={{
@@ -142,7 +206,7 @@ const MainPage = ({navigation,route}) => {
                 flex: 0,
                 marginTop: '5%'
             }} onPress={() => {
-                navigation.navigate('Location')
+                navigation.navigate('Location', {'paramPropKey': 'paramPropValue'})
             }}><Entypo color={colors.textAndIconColor} size={35} name="location-pin"/>
                 <Text style={{
                     textAlign: 'center',
@@ -237,7 +301,7 @@ const MainPage = ({navigation,route}) => {
                 flex: 0,
                 marginTop: '5%'
             }} onPress={() => {
-                navigation.navigate('GarbageSchedule',{json_data:json_data})
+                navigation.navigate('GarbageSchedule', {json_data: json_data})
             }}><MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="timetable"/>
                 <Text style={{
                     textAlign: 'center',

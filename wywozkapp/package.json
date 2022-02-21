@@ -26,6 +26,7 @@
     "react-native-gesture-handler": "^2.2.0",
     "react-native-get-location": "^2.2.1",
     "react-native-ionicons": "^4.6.5",
+    "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
