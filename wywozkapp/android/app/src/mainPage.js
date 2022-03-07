@@ -16,12 +16,33 @@ const MainPage = ({navigation, route}) => {
     const [city, setCity] = useState();
     const [street, setStreet] = useState();
     const [houseNumber, setHouseNumber] = useState();
+    const [reminderTime, setReminderTime] = useState('1day');
+
+
     const {colors} = useTheme();
     const json_data = [
         {
             'location': 'Tuchów',
             'scheduleDate': '10.02.2022',
             'garbageCollections': [
+                {
+                    'date': '10.01.2022',
+                    'type': 'paper',
+                    'month': 'STY',
+                    'name': 'papier i tektura'
+                },
+                {
+                    'date': '11.01.2022',
+                    'type': 'glass',
+                    'month': 'STY',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '11.01.2022',
+                    'type': 'metals',
+                    'month': 'STY',
+                    'name': 'metale i tworzywa sztuczne'
+                },
                 {
                     'date': '12.02.2022',
                     'type': 'paper',
@@ -44,7 +65,7 @@ const MainPage = ({navigation, route}) => {
                     'date': '21.02.2022',
                     'type': 'mixed',
                     'month': 'LUT',
-                    'name': 'mieszane'
+                    'name': 'śmieci mieszane'
                 },
                 {
                     'date': '21.02.2022',
@@ -59,10 +80,172 @@ const MainPage = ({navigation, route}) => {
                     'name': 'biodegradowalne'
                 },
                 {
+                    'date': '10.03.2022',
+                    'type': 'metals',
+                    'month': 'MAR',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '17.03.2022',
+                    'type': 'mixed',
+                    'month': 'MAR',
+                    'name': 'śmieci mieszane'
+                },
+                {
+                    'date': '07.04.2022',
+                    'type': 'metals',
+                    'month': 'KWI',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '12.04.2022',
+                    'type': 'bio',
+                    'month': 'KWI',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '12.04.2022',
+                    'type': 'mixed',
+                    'month': 'KWI',
+                    'name': 'śmieci mieszane'
+                },
+                {
+                    'date': '17.05.2022',
+                    'type': 'bio',
+                    'month': 'MAJ',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '17.05.2022',
+                    'type': 'mixed',
+                    'month': 'MAJ',
+                    'name': 'śmieci mieszane'
+                },
+                {
+                    'date': '17.05.2022',
+                    'type': 'metals',
+                    'month': 'MAJ',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '11.06.2022',
+                    'type': 'metals',
+                    'month': 'CZE',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '12.06.2022',
+                    'type': 'paper',
+                    'month': 'CZE',
+                    'name': 'papier i tektura'
+                },
+                {
+                    'date': '12.06.2022',
+                    'type': 'glass',
+                    'month': 'CZE',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '17.07.2022',
+                    'type': 'bio',
+                    'month': 'LIP',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '17.07.2022',
+                    'type': 'mixed',
+                    'month': 'LIP',
+                    'name': 'śmieci mieszane'
+                },
+                {
+                    'date': '23.07.2022',
+                    'type': 'metals',
+                    'month': 'LIP',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '05.08.2022',
+                    'type': 'bio',
+                    'month': 'SIE',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '07.08.2022',
+                    'type': 'mixed',
+                    'month': 'SIE',
+                    'name': 'śmieci mieszane'
+                },
+                {
+                    'date': '08.08.2022',
+                    'type': 'metals',
+                    'month': 'SIE',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '12.09.2022',
+                    'type': 'glass',
+                    'month': 'WRZ',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '16.09.2022',
+                    'type': 'bio',
+                    'month': 'WRZ',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '04.10.2022',
+                    'type': 'glass',
+                    'month': 'PAŹ',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '18.10.2022',
+                    'type': 'bio',
+                    'month': 'PAŹ',
+                    'name': 'biodegradowalne'
+                },
+                {
+                    'date': '02.11.2022',
+                    'type': 'glass',
+                    'month': 'LIS',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '05.11.2022',
+                    'type': 'bio',
+                    'month': 'LIS',
+                    'name': 'biodegradowalne'
+                },
+                {
                     'date': '07.11.2022',
                     'type': 'metals',
                     'month': 'LIS',
                     'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '05.12.2022',
+                    'type': 'paper',
+                    'month': 'GRU',
+                    'name': 'papier i tektura'
+                },
+                {
+                    'date': '05.12.2022',
+                    'type': 'glass',
+                    'month': 'GRU',
+                    'name': 'szkło'
+                },
+                {
+                    'date': '05.12.2022',
+                    'type': 'metals',
+                    'month': 'GRU',
+                    'name': 'metale i tworzywa sztuczne'
+                },
+                {
+                    'date': '20.12.2022',
+                    'type': 'paper',
+                    'month': 'GRU',
+                    'name': 'papier i tektura'
                 },
             ]
         }
@@ -77,12 +260,13 @@ const MainPage = ({navigation, route}) => {
 
     const _retrieveData = async () => {
         try {
-            const value = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
+            const value = AsyncStorage.getItem('STORAGE_USER_SETTINGS');
             if (value === null) {
                 navigation.navigate("newUserSettingsModal")
             } else {
                 //alert("Wczytano ustawienia: " + value)
-                let val = JSON.parse(value)
+                let val = JSON.parse(await value)
+                setReminderTime(val.selectedReminderTime)
                 setCity(val.city)
                 setStreet(val.street)
                 setHouseNumber(val.houseNumber)
@@ -94,7 +278,10 @@ const MainPage = ({navigation, route}) => {
     const nextGarbageDate = () => {
         const weekday = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
         //console.log('log ' + JSON.stringify(json_data[0].garbageCollections[0]))
-        const found = json_data[0].garbageCollections.find(element => element.date >= setDateLocationComponent());
+        const found = json_data[0].garbageCollections.find(element => new Date(element.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-')) >= new Date(setDateLocationComponent().replace('.', '-').replace('.', '-').split('-').reverse().join('-')));
+        if (found == null) {
+            return 'Brak danych'
+        }
         const nextGarbageDate = found.date
         const d = new Date(nextGarbageDate.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
         let day = weekday[d.getDay()];
@@ -105,18 +292,22 @@ const MainPage = ({navigation, route}) => {
     const nextGarbageType = () => {
         const nextGarbageDateOnly = nextGarbageDate().substr(-10)
         const found = json_data[0].garbageCollections.find(element => element.date == nextGarbageDateOnly);
+        if (found == null) {
+            return '-'
+        }
         const number = json_data[0].garbageCollections.filter(x => x.date == nextGarbageDateOnly).length - 1;
         let moreInfo = ''
         if (number > 0) {
             moreInfo = ' i ' + number + ' inne'
         }
         //console.log(found.name, number)
-        return 'Śmieci ' + found.name + moreInfo
+        return found.name + moreInfo
     }
     useEffect(() => {
         console.log('useEffect-----------')
         _retrieveData()
-        testPush()
+        // testPush()
+        scheduleAllNotifications();
     }, [route])
 
 
@@ -181,6 +372,45 @@ const MainPage = ({navigation, route}) => {
     //     },
     //     (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
     // );
+
+    const scheduleAllNotifications = () => {
+        PushNotification.cancelAllLocalNotifications()
+        let jsonData = json_data[0].garbageCollections;
+        let reminderTimeInSeconds = {
+            '1day': 86400,
+            '2days': 172800,
+            '3days': 259200,
+            '1week': 604800,
+        }
+        // let notificationTime = STORAGE_USER_SETTINGS;
+        console.log('reminder ' + reminderTime)
+        console.log('dat now ' + new Date(Date.now()))
+        // console.log('czas ' + jsonData.)
+
+        jsonData.map(item => {
+            let date = new Date(item.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
+            let seconds = date.getTime();
+            let now = new Date(Date.now())
+
+            if (seconds >= now) {
+                PushNotification.localNotificationSchedule({
+                    //... You can use all the options from localNotifications
+                    channelId: "channel-id",
+                    message: 'przygotuj ' + item.name + ' w dniu ' + item.date, // (required)
+                    date: new Date(seconds - reminderTimeInSeconds[reminderTime] * 1000 + 2 * 21600000), // in 60 secs
+                    allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+
+
+                    /* Android Only Properties */
+                    repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+                });
+            }
+        })
+        PushNotification.getScheduledLocalNotifications((nots) => {
+            console.log(nots);
+        })
+        // console.log('scedhule all notification ' + JSON.stringify(json_data[0].garbageCollections))
+    }
 
     return (
         <View style={{
