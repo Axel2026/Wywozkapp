@@ -55,6 +55,9 @@ const Location = ({navigation, route}) => {
                 setCity(val.city)
                 setStreet(val.street)
                 setHouseNumber(val.houseNumber)
+                console.log('city ' + city)
+                console.log('str ' + street)
+                console.log('hn ' + houseNumber)
                 getWeatherData(val.city, country)
 
             }
