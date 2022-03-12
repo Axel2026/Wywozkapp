@@ -77,8 +77,8 @@ const GarbageCollection = ({route}) => {
 
     const calculate = (date) => {
         const podana = new Date(date.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
-        const dziś = new Date(setDateLocationComponent().replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
-        const diffDays = Math.ceil((podana - dziś) / (1000 * 60 * 60 * 24));
+        const dzis = new Date(setDateLocationComponent().replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
+        const diffDays = Math.ceil((podana - dzis) / (1000 * 60 * 60 * 24));
 
         //console.log('podana' + podana)
         //console.log('dzis' + dziś)

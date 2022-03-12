@@ -28,7 +28,7 @@ const NewUserSettingsModal = ({navigation}) => {
     }
     function getAddressFromCoordinates({ latitude, longitude }) {
         return new Promise((resolve) => {
-            const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=glDPcNHhGcxDWLac9fvMIEUDcXj9HOoJIEjTSA4CTlI&mode=retrieveAddresses&prox=${latitude},${longitude}`
+            const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=aQ5DViNS9xMU7GfA0mMC1gpgHSOVdj9EJX4T7Um1V7o&mode=retrieveAddresses&prox=${latitude},${longitude}`
             fetch(url)
                 .then(res => res.json())
                 .then((resJson) => {
@@ -64,7 +64,7 @@ const NewUserSettingsModal = ({navigation}) => {
             .then(location => {
                 setLatitude(location.latitude)
                 setLongitude(location.longitude)
-                fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + latitude + ',' + longitude + '&key=' + 'glDPcNHhGcxDWLac9fvMIEUDcXj9HOoJIEjTSA4CTlI')
+                fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + latitude + ',' + longitude + '&key=' + 'aQ5DViNS9xMU7GfA0mMC1gpgHSOVdj9EJX4T7Um1V7o')
                     .then((response) => response.json())
                     .then((responseJson) => {
                         getAddressFromCoordinates({latitude,longitude})
