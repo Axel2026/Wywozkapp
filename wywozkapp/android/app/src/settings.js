@@ -78,7 +78,7 @@ const Settings = () => {
     async function getAddressFromCoordinates(latitude, longitude) {
         console.log(latitude + " " + longitude)
         return new Promise((resolve) => {
-            const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=jBSGY_EW33IDBGXABqOoOjx2sT5weNRI6WybF0d9aU0&mode=retrieveAddresses&prox=${latitude},${longitude}`
+            const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=aQ5DViNS9xMU7GfA0mMC1gpgHSOVdj9EJX4T7Um1V7o&mode=retrieveAddresses&prox=${latitude},${longitude}`
             fetch(url).then(res => res.json())
                 .then(resJson => {
                     console.log("resJson: " + JSON.stringify(resJson));

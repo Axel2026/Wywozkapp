@@ -10,6 +10,7 @@ import {AsyncStorage} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import PushNotification from "react-native-push-notification";
 import json_data from './json_data'
+import moment from "moment";
 
 const MainPage = ({navigation, route}) => {
 
@@ -146,6 +147,46 @@ const MainPage = ({navigation, route}) => {
         (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
     );
 
+    // function scheduleAllNotifications(reminderTime) {
+    //     PushNotification.cancelAllLocalNotifications()
+    //     let jsonData = json_data[0].garbageCollections;
+    //     let reminderTimeInSeconds = {
+    //         '1day': 86400,
+    //         '2days': 172800,
+    //         '3days': 259200,
+    //         '1week': 604800,
+    //     }
+    //     // let notificationTime = STORAGE_USER_SETTINGS;
+    //     console.log('reminder ' + reminderTime)
+    //     console.log('dat now ' + new Date(Date.now()))
+    //     // console.log('czas ' + jsonData.)
+    //
+    //     jsonData.map(item => {
+    //         let date = new Date(item.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
+    //         let seconds = date.getTime();
+    //         let now = new Date(Date.now())
+    //
+    //         if (seconds >= now) {
+    //             PushNotification.localNotificationSchedule({
+    //                 //... You can use all the options from localNotifications
+    //                 channelId: "channel-id",
+    //                 message: 'przygotuj ' + item.name + ' w dniu ' + item.date, // (required)
+    //                 date: new Date(seconds - reminderTimeInSeconds[reminderTime] * 1000 + 2 * 21600000), // in 60 secs
+    //                 // date: new Date(Date.now() + 2 * 1000), // in 60 secs
+    //                 allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+    //
+    //
+    //                 /* Android Only Properties */
+    //                 repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+    //             });
+    //         }
+    //     })
+    //     PushNotification.getScheduledLocalNotifications((nots) => {
+    //         // console.log(nots);
+    //     })
+    //     // console.log('scedhule all notification ' + JSON.stringify(json_data[0].garbageCollections))
+    // }
+
     function scheduleAllNotifications(reminderTime) {
         PushNotification.cancelAllLocalNotifications()
         let jsonData = json_data[0].garbageCollections;
@@ -155,16 +196,22 @@ const MainPage = ({navigation, route}) => {
             '3days': 259200,
             '1week': 604800,
         }
+
+
         // let notificationTime = STORAGE_USER_SETTINGS;
         console.log('reminder ' + reminderTime)
         console.log('dat now ' + new Date(Date.now()))
         // console.log('czas ' + jsonData.)
 
         jsonData.map(item => {
-            let date = new Date(item.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
-            let seconds = date.getTime();
-            let now = new Date(Date.now())
 
+            // let date = new Date(item.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
+            // let seconds = date.getTime();
+            // let now = new Date(Date.now())
+
+            let seconds = moment(item.date, 'DD.MM.YYYY');
+            let now = moment()
+            console.log('---------data ' + new Date(seconds - reminderTimeInSeconds[reminderTime] * 1000 + 2 * 21600000))
             if (seconds >= now) {
                 PushNotification.localNotificationSchedule({
                     //... You can use all the options from localNotifications
