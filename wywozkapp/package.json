@@ -22,6 +22,8 @@
     "axios": "^0.25.0",
     "flatlist-intro-animations": "^1.3.4",
     "moment": "^2.29.1",
+    "pinar": "^0.12.1",
+    "pouchdb": "^7.2.2",
     "react": "17.0.2",
     "react-native": "0.67.2",
     "react-native-gesture-handler": "^2.2.0",
