@@ -9,6 +9,7 @@ import {Provider, useSelector} from 'react-redux'
 import {createStore, combineReducers} from "redux";
 import {themeReducer} from "./android/app/src/themeReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const Stack = createStackNavigator();
 
@@ -56,9 +57,24 @@ export function Navigation() {
 
     let parsed;
 
+    const fetchData = async () => {
+        let fetchedData = await AsyncStorage.getItem('STORAGE_USER_SETTINGS')
+        let fetchedCity;
+        fetchedCity = JSON.parse(fetchedData).city
+        axios.post("http://10.0.2.2:3001/api/getSchedule", {
+            city: fetchedCity
+        })
+            .then(response => {
+                    AsyncStorage.setItem('STORAGE_SCHEDULE_CITY', JSON.stringify(response.data))
+                }
+            )
+            .catch(error => console.log(error));
+    }
+
     useEffect(() => {
         SplashScreen.hide();
         getKeyValue()
+        fetchData()
     }, [])
 
     let currentTheme = useSelector(state => {

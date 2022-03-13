@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet, ScrollView, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, ScrollView, Text, View, AsyncStorage} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {FlatList} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -11,7 +11,7 @@ import json_data from './json_data'
 const GarbageCollection = ({route}) => {
 
     const [selectedDateRange, setSelectedDateRange] = useState('thismonth')
-
+    const [schedule, setSchedule] = useState();
     const garbage_colors = {
         paper: '#2b81a6',
         glass: '#2f7b25',
@@ -23,6 +23,18 @@ const GarbageCollection = ({route}) => {
     const {colors} = useTheme()
 
     /*const json_data = route.params.json_data*/
+
+
+    const _retrieveData = async () => {
+        try {
+            const valueSchedule = await AsyncStorage.getItem('STORAGE_SCHEDULE_CITY');
+            let valSchedule = JSON.parse(valueSchedule)
+            setSchedule(valSchedule)
+
+        } catch (error) {
+            // Error retrieving data
+        }
+    };
 
     const garbageColorStyles = (type) => {
         return {
@@ -61,16 +73,16 @@ const GarbageCollection = ({route}) => {
         console.log(range)
 
         if (range == 'thismonth') {
-            return json_data[0].garbageCollections.filter(element => element.date.substr(3, 2) == month)
+            return schedule[0].garbageCollections.filter(element => element.date.substr(3, 2) == month)
         } else if (range == 'nextmonth') {
             const nextMonth = date.getMonth() + 2 < 10 ? "0" + (date.getMonth() + 2) : (date.getMonth() + 2);
-            return json_data[0].garbageCollections.filter(element => element.date.substr(3, 2) == nextMonth)
+            return schedule[0].garbageCollections.filter(element => element.date.substr(3, 2) == nextMonth)
         } else if (range == '3nextmonths') {
             const nextMonth = date.getMonth() + 2 < 10 ? "0" + (date.getMonth() + 2) : (date.getMonth() + 2);
             const nextNextMonth = date.getMonth() + 3 < 10 ? "0" + (date.getMonth() + 3) : (date.getMonth() + 3);
-            return json_data[0].garbageCollections.filter(element => element.date.substr(3, 2) == month || element.date.substr(3, 2) == nextMonth || element.date.substr(3, 2) == nextNextMonth)
+            return schedule[0].garbageCollections.filter(element => element.date.substr(3, 2) == month || element.date.substr(3, 2) == nextMonth || element.date.substr(3, 2) == nextNextMonth)
         } else if (range == 'thisyear') {
-            return json_data[0].garbageCollections.filter(element => element.date.substr(6, 5) == date.getFullYear())
+            return schedule[0].garbageCollections.filter(element => element.date.substr(6, 5) == date.getFullYear())
 
         }
     };
@@ -97,6 +109,9 @@ const GarbageCollection = ({route}) => {
         }
     }
 
+    useEffect(() => {
+        _retrieveData()
+    }, [])
 
     return (
         <View style={{
@@ -126,7 +141,7 @@ const GarbageCollection = ({route}) => {
                     fontSize: 16,
                     textAlign: 'center',
                     fontFamily: 'Poppins-Medium',
-                }}>Ostatnia aktualizacja: {json_data[0].scheduleDate}</Text>
+                }}>Ostatnia aktualizacja: {schedule ? schedule[0].scheduleDate : console.log('loading...')}</Text>
 
             </View>
 
@@ -153,7 +168,7 @@ const GarbageCollection = ({route}) => {
                 </Picker>
                 <FlatList
                     /* data={json_data[0].garbageCollections}*/
-                    data={scheduleRange(selectedDateRange)}
+                    data={schedule !== undefined ? scheduleRange(selectedDateRange) : console.log('loading...')}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     animationType={AnimationType.Fade}

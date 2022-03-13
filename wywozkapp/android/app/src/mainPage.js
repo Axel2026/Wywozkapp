@@ -19,8 +19,14 @@ const MainPage = ({navigation, route}) => {
     const [street, setStreet] = useState();
     const [houseNumber, setHouseNumber] = useState();
     const [reminderTime, setReminderTime] = useState();
+    const [schedule, setSchedule] = useState();
 
     const {colors} = useTheme();
+
+
+
+    console.log('-------------schedule ' + JSON.stringify(schedule))
+
 
     function setDateLocationComponent() {
         const date = new Date();
@@ -32,30 +38,33 @@ const MainPage = ({navigation, route}) => {
     const _retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('STORAGE_USER_SETTINGS');
+            const valueSchedule = await AsyncStorage.getItem('STORAGE_SCHEDULE_CITY');
             if (value === null) {
                 navigation.navigate("newUserSettingsModal")
             } else {
                 //alert("Wczytano ustawienia: " + value)
                 let val = JSON.parse(value)
+                let valSchedule = JSON.parse(valueSchedule)
                 setReminderTime(val.selectedReminderTime)
                 setCity(val.city)
                 setStreet(val.street)
                 setHouseNumber(val.houseNumber)
+                setSchedule(valSchedule)
                 scheduleAllNotifications(val.selectedReminderTime);
             }
         } catch (error) {
             // Error retrieving data
         }
     };
+
     const nextGarbageDate = () => {
         const weekday = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
-        //console.log('log ' + JSON.stringify(json_data[0].garbageCollections[0]))
-        const found = json_data[0].garbageCollections.find(element => new Date(element.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-')) >= Date.now())
+        const found = schedule[0].garbageCollections.find(element => new Date(element.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-')) >= Date.now())
         // const found = json_data[0].garbageCollections.find(element => new Date(element.date.replace('.', '-').replace('.', '-').split('-').reverse().join('-'))) >= new Date(setDateLocationComponent().replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
 
         // let parsedDate = Date.parse(found)
         // console.log('parsed date ' + parsedDate)
-        console.log('------------found element date - ' + JSON.stringify(found))
+        // console.log('------------found element date - ' + JSON.stringify(found))
         const nextGarbageDate = found.date
         const d = new Date(nextGarbageDate.replace('.', '-').replace('.', '-').split('-').reverse().join('-'));
         let day = weekday[d.getDay()];
@@ -66,8 +75,8 @@ const MainPage = ({navigation, route}) => {
 
     const nextGarbageType = () => {
         const nextGarbageDateOnly = nextGarbageDate().substr(-10)
-        const found = json_data[0].garbageCollections.find(element => element.date == nextGarbageDateOnly);
-        const number = json_data[0].garbageCollections.filter(x => x.date == nextGarbageDateOnly).length - 1;
+        const found = schedule[0].garbageCollections.find(element => element.date == nextGarbageDateOnly);
+        const number = schedule[0].garbageCollections.filter(x => x.date == nextGarbageDateOnly).length - 1;
         let moreInfo = ''
         if (number > 0) {
             moreInfo = ' i ' + number + ' inne'
@@ -189,7 +198,7 @@ const MainPage = ({navigation, route}) => {
 
     function scheduleAllNotifications(reminderTime) {
         PushNotification.cancelAllLocalNotifications()
-        let jsonData = json_data[0].garbageCollections;
+        let jsonData = schedule[0].garbageCollections;
         let reminderTimeInSeconds = {
             '1day': 86400,
             '2days': 172800,
@@ -199,8 +208,8 @@ const MainPage = ({navigation, route}) => {
 
 
         // let notificationTime = STORAGE_USER_SETTINGS;
-        console.log('reminder ' + reminderTime)
-        console.log('dat now ' + new Date(Date.now()))
+        // console.log('reminder ' + reminderTime)
+        // console.log('dat now ' + new Date(Date.now()))
         // console.log('czas ' + jsonData.)
 
         jsonData.map(item => {
@@ -211,7 +220,7 @@ const MainPage = ({navigation, route}) => {
 
             let seconds = moment(item.date, 'DD.MM.YYYY');
             let now = moment()
-            console.log('---------data ' + new Date(seconds - reminderTimeInSeconds[reminderTime] * 1000 + 2 * 21600000))
+            // console.log('---------data ' + new Date(seconds - reminderTimeInSeconds[reminderTime] * 1000 + 2 * 21600000))
             if (seconds >= now) {
                 PushNotification.localNotificationSchedule({
                     //... You can use all the options from localNotifications
@@ -303,12 +312,12 @@ const MainPage = ({navigation, route}) => {
                     color: colors.textAndIconColor,
                     fontFamily: 'Poppins-Medium',
                     textAlign: 'center'
-                }}>{nextGarbageDate()}</Text>
+                }}>{schedule !== undefined ? nextGarbageDate() : console.log('loading...')}</Text>
                 <Text style={{
                     color: colors.textAndIconColor,
                     fontFamily: 'Poppins-Medium',
                     textAlign: 'center'
-                }}>{nextGarbageType()}</Text></TouchableOpacity>
+                }}>{schedule !== undefined ? nextGarbageType() : console.log('loading...')}</Text></TouchableOpacity>
             <TouchableOpacity style={{
                 backgroundColor: colors.blockColor,
                 display: "flex",
@@ -353,7 +362,7 @@ const MainPage = ({navigation, route}) => {
                 flex: 0,
                 marginTop: '5%'
             }} onPress={() => {
-                navigation.navigate('GarbageSchedule', {json_data: json_data})
+                navigation.navigate('GarbageSchedule')
             }}><MaterialCommunityIcons color={colors.textAndIconColor} size={35} name="timetable"/>
                 <Text style={{
                     textAlign: 'center',
